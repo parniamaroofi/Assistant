@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Note</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./css/style.css"/>	
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+    <body>
+        
+        <div class="container" id="saving-note">
+            <br><br>
+            <div class="card form-border">
+                <div class="note-form fade item">
+
+                    <label for="name"><span class="red-text">*</span> Name : <input type="text" v-model="newName" autocomplete="off"></label>
+                    <label for="subject">Subject : <input type="text" v-model="newSubject"></label>
+                    <label for="note"><span class="red-text">*</span> Note : <textarea v-model="newText"></textarea></label>
+                    <transition name="fade">
+                        <span v-show="error" class="error"><i class="material-icons red-text">cancel</i><span>Oops! you must fill in the name field and the note field.</span></span>
+                    </transition>
+                    <transition name="fade">
+                        <span v-show="done" class="done"><i class="material-icons green-text">check_circle</i><span>Saved!</span></span>
+                    </transition>
+                    <div class="btn waves-effect save-btn" v-on:click="saving">Save</div>     
+     
+                </div>
+            </div>
+            <br><br><br><br>
+            <div class="show-note fade item" id="show-note">
+                <label>Saved Notes</label>
+                <br><br>
+                <span class="no-notes" id="no-notes">There are no notes yet...</span>
+                <div class="card note-box" v-for="(note,index) in notes" v-if="note.name">
+                    
+                    <div class="content">
+                        <ul>
+                            <li><i class="material-icons left">person</i> {{note.name}}</li>
+                            <li v-if="note.subject"><i class="material-icons left">subject</i> {{note.subject}}</li>
+                            <li class="text"><i class="material-icons left">rate_review</i> {{note.note_text}}</li>
+                        </ul>
+                    </div>
+                    <div class="card-action">
+                        <span class="left" id="date-time">{{note.time}}</span>
+                        <span class="delete-note right" v-on:click="deleteNote(index)"><i class="material-icons">delete_forever</i></span>
+                    </div>
+                    
+                </div>
+            </div>
+
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+        <script type="text/javascript" src="js/code.js"></script>
+        <script src="https://unpkg.com/fadin"></script>
+    </body>
+</html>
