@@ -1,135 +1,36 @@
 *{
   font-family: "Poppins", sans-serif;
+  letter-spacing: 0 !important;
 }
-.form-bord {
-  width: 100%;
-  height: 600px;
-  border-radius: 5px !important;
+html::-webkit-scrollbar{
+  width: 8px;
 }
-
-.the-form {
-  padding: 40px 65px;
+html::-webkit-scrollbar-thumb {
+  background-color:#618d93 ;
 }
-
-.the-form .error {
-  color: #e44e42;
-  font-weight: bold;
+html::-webkit-scrollbar-track{
+  background-color: #eee;
 }
-
-.the-form .done {
-  color: green;
-  font-weight: bold;
+.note-form{
+  height: 86vh;
 }
 
-.the-form label {
-  color: #6d82a8;
-  font-size: 14px;
-  display: block;
-  width: 200px;
-  padding: 10px;
-  font-weight: bold;
+input{
+  border: none !important;
+  box-shadow: none !important;
+  font-size: 0.9rem !important;
+}
+.v-input__slot{
+  border-radius: 10px !important;
 }
 
-.the-form label input {
-  border: 1px rgba(187, 150, 150, 0.671) solid !important;
-  -webkit-box-shadow: none !important;
-          box-shadow: none !important;
-  border-radius: 5px !important;
-  padding-left: 10px !important;
-  width: 230px !important;
-  height: 35px !important;
-  margin-top: 5px !important;
-  font-size: 14px !important;
-  color: darkslategrey !important;
-  background-color: ghostwhite !important;
+textarea{
+  height: 200px !important;
+  font-size: 0.9rem !important;
 }
 
-.the-form label textarea {
-  border: 1px rgba(187, 150, 150, 0.671) solid !important;
-  -webkit-box-shadow: none !important;
-          box-shadow: none !important;
-  border-radius: 5px !important;
-  padding-left: 10px !important;
-  outline: none;
-  min-width: 550px;
-  min-height: 200px;
-  max-width: 800px;
-  max-height: 250px;
-  margin-top: 5px !important;
-  color: darkslategrey !important;
-  background-color: ghostwhite !important;
-}
-
-.the-form .save-btn {
-  position: absolute;
-  right: 30px;
-  bottom: 20px;
-  width: 100px !important;
-  font-weight: bold !important;
-  border-radius: 5px !important;
-  background-color: #6d82a8 !important;
-}
-
-.show-note {
-  width: 100%;
-  min-height: 100px;
-  border-top: 2px solid #6d82a8;
-}
-
-.show-note label {
-  font-size: 24px;
-  color: #96a5c0;
-  background-color: white;
-  position: relative;
-  top: -25px;
-  left: 60px;
-  padding: 8px;
-}
-
-.show-note .note-box {
-  position: relative;
-  left: 10%;
-  right: 10%;
-  width: 80%;
-  margin-bottom: 50px;
-  border-radius: 5px !important;
-  padding: 1px 12px;
-  background-color: ghostwhite !important;
-  color: #899db1;
-}
-
-.show-note .note-box ul li {
-  padding: 10px;
-}
-
-.show-note .note-box ul .text {
-  color: #627b94;
-}
-
-.show-note .note-box #date-time {
-  font-size: 14px;
-  margin-top: -12px;
-  color: #565f70;
-  opacity: .8;
-}
-
-.show-note .note-box .del-note {
-  color: #565f70;
-  opacity: .6;
-  -webkit-transition: all 0.5s ease;
-  transition: all 0.5s ease;
-  cursor: pointer;
-  position: absolute;
-  right: 0px;
-  bottom: 0px;
-}
-
-.show-note .note-box .del-note:hover {
-  opacity: 1;
-}
-
-.show-note .note-box .del-note i {
-  font-size: 20px;
+.v-label{
+  font-size: 0.95rem !important;
 }
 
 .fade {
@@ -170,4 +71,22 @@
   box-shadow: none !important;
   border-radius: 12px !important;
   text-transform: none !important
+}
+
+/* common card style */
+.common-card{
+  position: relative;
+  box-shadow: none !important;
+  border-radius: 12px 0 12px 0 !important;
+  border: 1px solid #00acc1 !important;
+}
+.card-title{
+  color: #00acc1;
+  font-size: 1.4rem;
+  position: absolute;
+  top: -18px;
+  left: 30px;
+  background-color: #fff;
+  padding: 0 10px;
+  text-shadow: 1px 1px 2px #b1b1b1;
 }

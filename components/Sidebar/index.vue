@@ -33,24 +33,35 @@
           <v-list-item-icon>
             <v-icon class="mr-4">$Note</v-icon>
           </v-list-item-icon>
-          <v-list-item-title class="fs-xsmall">Note</v-list-item-title>
+          <v-list-item-title class="fs-xsmall">New note</v-list-item-title>
         </v-list-item>
-        <v-list-item link>
+        <v-list-item to="/notes">
+          <v-list-item-icon>
+            <v-icon class="mr-4">$Bookmark</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title class="fs-xsmall">Saved notes</v-list-item-title>
+        </v-list-item>
+        <v-list-item to="/chat">
           <v-list-item-icon>
             <v-icon class="mr-4">$Chat</v-icon>
           </v-list-item-icon>
-          <v-list-item-title class="fs-xsmall">Chat</v-list-item-title>
+          <v-list-item-title class="fs-xsmall">Chat room</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </div>
 </template>
 
-<style>
+<style lang="scss">
 .sidebar {
   position: fixed;
   left: 0;
   top: 0;
   height: 100vh;
+
+  .v-avatar {
+    width: 65px !important;
+    height: 65px !important;
+  }
 }
 </style>

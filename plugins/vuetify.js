@@ -4,6 +4,8 @@ import "vuetify/dist/vuetify.min.css";
 import Home from "./../components/icons/Home.vue";
 import Note from "./../components/icons/Note.vue";
 import Chat from "./../components/icons/Chat.vue";
+import Bookmark from "./../components/icons/Bookmark.vue";
+import SquareCheck from "./../components/icons/SquareCheck.vue";
 
 Vue.use(Vuetify);
 
@@ -32,6 +34,12 @@ export default new Vuetify({
       },
       Chat: {
         component: Chat
+      },
+      Bookmark: {
+        component: Bookmark
+      },
+      SquareCheck: {
+        component: SquareCheck
       }
     }
   }

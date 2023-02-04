@@ -19,15 +19,25 @@
     <div>
       <v-row class="mx-6 mt-6">
         <v-col>
-          <v-btn style="width:100%" height="80" color="primary" to="/chat"
+          <v-btn
+            style="width:100%"
+            class="dashboard-button"
+            height="80"
+            color="primary"
+            to="/chat"
             ><v-icon class="mr-3">$Chat</v-icon>
-            <span class="fs-xlarge">Chat</span></v-btn
+            <span class="fs-xlarge">Chat room</span></v-btn
           >
         </v-col>
         <v-col>
-          <v-btn style="width:100%" height="80" color="primary" to="/note"
+          <v-btn
+            style="width:100%"
+            class="dashboard-button"
+            height="80"
+            color="primary"
+            to="/note"
             ><v-icon class="mr-3">$Note</v-icon>
-            <span class="fs-xlarge">Note</span></v-btn
+            <span class="fs-xlarge">New note</span></v-btn
           >
         </v-col>
       </v-row>
@@ -35,4 +45,13 @@
   </div>
 </template>
 
-<style scoped></style>
+<style>
+.dashboard-button {
+  background: rgb(78, 200, 213) !important;
+  background: linear-gradient(
+    0deg,
+    rgba(78, 200, 213, 1) 0%,
+    rgba(46, 88, 93, 1) 100%
+  ) !important;
+}
+</style>
