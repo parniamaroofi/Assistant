@@ -1,55 +1,27 @@
-@font-face {
-  font-family: 'mulish';
-  src: url("../font/Mulish-Light.woff2") format("woff2"), url("../font/Mulish-Light.woff") format("woff"), url("../font/Mulish-Light.ttf") format("ttf");
+*{
+  font-family: "Poppins", sans-serif;
 }
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'mulish';
-}
-
-.form-border {
+.form-bord {
   width: 100%;
-  height: 550px;
+  height: 600px;
   border-radius: 5px !important;
 }
 
-.note-form {
+.the-form {
   padding: 40px 65px;
 }
 
-.note-form .error {
+.the-form .error {
   color: #e44e42;
   font-weight: bold;
-  display: flex;
-  flex-flow: row wrap;
 }
 
-.note-form .error i {
-  margin-left: 10px;
-}
-
-.note-form .error span {
-  margin: 1px 5px;
-}
-
-.note-form .done {
+.the-form .done {
   color: green;
   font-weight: bold;
-  display: flex;
-  flex-flow: row wrap;
 }
 
-.note-form .done i {
-  margin-left: 10px;
-}
-
-.note-form .done span {
-  margin: 1px 5px;
-}
-
-.note-form label {
+.the-form label {
   color: #6d82a8;
   font-size: 14px;
   display: block;
@@ -58,9 +30,10 @@ body {
   font-weight: bold;
 }
 
-.note-form label input {
+.the-form label input {
   border: 1px rgba(187, 150, 150, 0.671) solid !important;
-  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
   border-radius: 5px !important;
   padding-left: 10px !important;
   width: 230px !important;
@@ -71,22 +44,23 @@ body {
   background-color: ghostwhite !important;
 }
 
-.note-form label textarea {
+.the-form label textarea {
   border: 1px rgba(187, 150, 150, 0.671) solid !important;
-  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
   border-radius: 5px !important;
   padding-left: 10px !important;
   outline: none;
   min-width: 550px;
   min-height: 200px;
   max-width: 800px;
-  max-height: 200px;
+  max-height: 250px;
   margin-top: 5px !important;
   color: darkslategrey !important;
   background-color: ghostwhite !important;
 }
 
-.note-form .save-btn {
+.the-form .save-btn {
   position: absolute;
   right: 30px;
   bottom: 20px;
@@ -100,17 +74,6 @@ body {
   width: 100%;
   min-height: 100px;
   border-top: 2px solid #6d82a8;
-  position: relative;
-}
-
-.show-note .no-notes {
-  position: absolute;
-  top: 45%;
-  left: 35%;
-  transform: scaleX(-50%) scaleY(-50%);
-  color: rgba(137, 157, 177, 0.7);
-  font-size: 25px;
-  padding-bottom: 50px;
 }
 
 .show-note label {
@@ -144,16 +107,16 @@ body {
 }
 
 .show-note .note-box #date-time {
-  font-size: 13px;
-  margin: -10px -15px;
+  font-size: 14px;
+  margin-top: -12px;
   color: #565f70;
   opacity: .8;
-  font-weight: bold;
 }
 
-.show-note .note-box .delete-note {
+.show-note .note-box .del-note {
   color: #565f70;
   opacity: .6;
+  -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
   cursor: pointer;
   position: absolute;
@@ -161,20 +124,22 @@ body {
   bottom: 0px;
 }
 
-.show-note .note-box .delete-note:hover {
+.show-note .note-box .del-note:hover {
   opacity: 1;
 }
 
-.show-note .note-box .delete-note i {
+.show-note .note-box .del-note i {
   font-size: 20px;
 }
 
 .fade {
   opacity: 0;
+  -webkit-transition: 0.4s linear;
   transition: 0.4s linear;
 }
 
 .fade-enter-active, .fade-leave-active {
+  -webkit-transition: opacity .5s;
   transition: opacity .5s;
 }
 
@@ -182,3 +147,27 @@ body {
   opacity: 0;
 }
 /*# sourceMappingURL=style.css.map */
+
+/* font size */
+.fs-xlarge {
+  font-size: 1.1rem !important;
+}
+.fs-large {
+  font-size: 0.1rem !important;
+}
+.fs-medium{
+  font-size: 0.85rem !important;
+}
+.fs-small {
+  font-size: 0.8rem !important;
+}
+.fs-xsmall {
+  font-size: 0.75rem !important;
+}
+
+/* button style */
+.v-btn{
+  box-shadow: none !important;
+  border-radius: 12px !important;
+  text-transform: none !important
+}
