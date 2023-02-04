@@ -6,6 +6,7 @@ import Note from "./../components/icons/Note.vue";
 import Chat from "./../components/icons/Chat.vue";
 import Bookmark from "./../components/icons/Bookmark.vue";
 import SquareCheck from "./../components/icons/SquareCheck.vue";
+import Pen from "./../components/icons/Pen.vue";
 
 Vue.use(Vuetify);
 
@@ -40,6 +41,9 @@ export default new Vuetify({
       },
       SquareCheck: {
         component: SquareCheck
+      },
+      Pen: {
+        component: Pen
       }
     }
   }

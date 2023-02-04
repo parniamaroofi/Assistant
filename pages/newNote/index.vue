@@ -2,20 +2,20 @@
   <div id="new-note">
     <br /><br />
     <v-card class="common-card note-form">
-      <div class="card-title">
-        New note
-      </div>
+      <div class="card-title"><v-icon class="mr-2">$Pen</v-icon>New note</div>
       <div class="pa-8 pt-16">
         <v-text-field
           v-model="newNote.name"
           outlined
-          label="Name"
+          label="*Name"
+          placeholder="Name"
           style="width:350px;"
         ></v-text-field>
         <v-text-field
           v-model="newNote.subject"
           outlined
-          label="Subject (Optional)"
+          label="Subject"
+          placeholder="Subject (Optional)"
           style="width:350px;"
         ></v-text-field>
         <v-textarea
@@ -23,11 +23,17 @@
           rows="6"
           outlined
           no-resize
-          label="Text"
+          label="*Your note"
+          placeholder="Your note..."
         ></v-textarea>
-        <div class="save-button text-right">
-          <v-btn height="45" width="120" color="primary" @click="saveNote"
-            >Save</v-btn
+        <div class="save-button text-right mt-6">
+          <v-btn
+            height="45"
+            style="width:100%"
+            color="primary"
+            @click="saveNote"
+          >
+            <v-icon class="mr-1" small>mdi-check-underline</v-icon>Save</v-btn
           >
         </div>
         <!-- <v-row class="mt-8">
@@ -138,8 +144,6 @@ export default {
 
 <style lang="scss">
 .save-button {
-  position: absolute;
-  bottom: 30px;
-  right: 30px;
+  width: 100%;
 }
 </style>

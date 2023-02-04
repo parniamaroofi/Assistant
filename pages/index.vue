@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div class="d-flex flex-column justify-space-between">
     <div style="width:100%" class="d-flex">
-      <img width="500" src="~assets/image/Taking notes-rafiki.png" alt="" />
+      <div style="width: 500px">
+        <img width="500" src="~assets/image/Taking notes-rafiki.png" alt="" />
+      </div>
       <div class="mt-15 pt-2">
         <h4>Welcome to <span class="primary--text">EasyNote</span>.</h4>
 
@@ -35,7 +37,7 @@
             class="dashboard-button"
             height="80"
             color="primary"
-            to="/note"
+            to="/newNote"
             ><v-icon class="mr-3">$Note</v-icon>
             <span class="fs-xlarge">New note</span></v-btn
           >

@@ -22,6 +22,7 @@ export default {
 
 <style lang="scss">
 .main {
+  min-height: 90vh;
   width: calc(100vw - 280px);
   position: absolute;
   right: 0;

@@ -19,6 +19,7 @@ input{
   border: none !important;
   box-shadow: none !important;
   font-size: 0.9rem !important;
+  margin-bottom: 0 !important;
 }
 .v-input__slot{
   border-radius: 10px !important;
@@ -77,16 +78,9 @@ textarea{
 .common-card{
   position: relative;
   box-shadow: none !important;
-  border-radius: 12px 0 12px 0 !important;
-  border: 1px solid #00acc1 !important;
 }
 .card-title{
   color: #00acc1;
-  font-size: 1.4rem;
-  position: absolute;
-  top: -18px;
-  left: 30px;
-  background-color: #fff;
-  padding: 0 10px;
-  text-shadow: 1px 1px 2px #b1b1b1;
+  font-size: 1.5rem;
+  margin: 0 32px;
 }

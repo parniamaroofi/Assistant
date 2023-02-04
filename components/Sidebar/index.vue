@@ -29,13 +29,13 @@
           </v-list-item-icon>
           <v-list-item-title class="fs-xsmall">Home</v-list-item-title>
         </v-list-item>
-        <v-list-item to="/note">
+        <v-list-item to="/newNote">
           <v-list-item-icon>
             <v-icon class="mr-4">$Note</v-icon>
           </v-list-item-icon>
           <v-list-item-title class="fs-xsmall">New note</v-list-item-title>
         </v-list-item>
-        <v-list-item to="/notes">
+        <v-list-item to="/newNotes">
           <v-list-item-icon>
             <v-icon class="mr-4">$Bookmark</v-icon>
           </v-list-item-icon>
