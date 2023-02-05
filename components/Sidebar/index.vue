@@ -35,7 +35,7 @@
           </v-list-item-icon>
           <v-list-item-title class="fs-xsmall">New note</v-list-item-title>
         </v-list-item>
-        <v-list-item to="/newNotes">
+        <v-list-item to="/savedNotes">
           <v-list-item-icon>
             <v-icon class="mr-4">$Bookmark</v-icon>
           </v-list-item-icon>

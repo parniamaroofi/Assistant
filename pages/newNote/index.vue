@@ -2,7 +2,7 @@
   <div id="new-note">
     <br /><br />
     <v-card class="common-card note-form">
-      <div class="card-title"><v-icon class="mr-2">$Pen</v-icon>New note</div>
+      <div class="card-title">New note<v-icon class="ml-1">$Pen</v-icon></div>
       <div class="pa-8 pt-16">
         <v-text-field
           v-model="newNote.name"
@@ -84,6 +84,20 @@
         </div>
       </div>
     </div> -->
+    <v-snackbar
+      top
+      right
+      text
+      outlined
+      :timeout="3000"
+      :color="notif.color"
+      v-model="snackbar"
+    >
+      <div class="w-100 text-center">
+        <v-icon :color="notif.color" class="mr-2">{{ notif.icon }}</v-icon
+        >{{ notif.text }}
+      </div>
+    </v-snackbar>
   </div>
 </template>
 
@@ -91,43 +105,48 @@
 export default {
   data() {
     return {
-      notes: [
-        {
-          name: "",
-          subject: "",
-          note_text: "",
-          time: ""
-        }
-      ],
+      notes: [],
       newNote: {
         name: "",
         subject: "",
         text: ""
       },
-      error: false,
-      done: false
+      snackbar: false,
+      notif: {
+        color: "success",
+        text: "",
+        icon: ""
+      }
     };
   },
   methods: {
     saveNote: function() {
       let dt = new Date();
-      if (!this.newName || !this.newText) {
-        this.error = true;
-        this.done = false;
-        setTimeout(() => (this.error = false), 2000);
+      if (!this.newNote.name || !this.newNote.text) {
+        this.notif = {
+          color: "error",
+          text: "Oops! you must fill in the required fields.",
+          icon: "mdi-alert-decagram"
+        };
+        this.snackbar = true;
       } else {
+        this.notes = JSON.parse(localStorage.getItem("notes"));
         this.notes.push({
-          name: this.newName,
-          subject: this.newSubject,
-          note_text: this.newText,
+          author: this.newNote.name,
+          subject: this.newNote.subject,
+          text: this.newNote.text,
           time: dt.toLocaleString()
         });
-        this.error = false;
-        this.done = true;
-        setTimeout(() => (this.done = false), 2000);
-        this.newName = "";
-        this.newSubject = "";
-        this.newText = "";
+        this.notif = {
+          color: "success",
+          text: "Your note successfully saved.",
+          icon: "mdi-check-decagram"
+        };
+        this.snackbar = true;
+
+        localStorage.setItem("notes", JSON.stringify(this.notes));
+
+        this.newNote = {};
       }
     },
 
@@ -145,5 +164,9 @@ export default {
 <style lang="scss">
 .save-button {
   width: 100%;
+}
+.v-snack__wrapper {
+  box-shadow: none !important;
+  border-radius: 8px !important;
 }
 </style>

@@ -84,3 +84,7 @@ textarea{
   font-size: 1.5rem;
   margin: 0 32px;
 }
+
+.pointer{
+  cursor: pointer;
+}
