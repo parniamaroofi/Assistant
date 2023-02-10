@@ -7,6 +7,10 @@ import Chat from "./../components/icons/Chat.vue";
 import Bookmark from "./../components/icons/Bookmark.vue";
 import SquareCheck from "./../components/icons/SquareCheck.vue";
 import Pen from "./../components/icons/Pen.vue";
+import User from "./../components/icons/User.vue";
+import Trash from "./../components/icons/Trash.vue";
+import StarOn from "./../components/icons/StarOn.vue";
+import StarOff from "./../components/icons/StarOff.vue";
 
 Vue.use(Vuetify);
 
@@ -44,6 +48,18 @@ export default new Vuetify({
       },
       Pen: {
         component: Pen
+      },
+      User: {
+        component: User
+      },
+      Trash: {
+        component: Trash
+      },
+      StarOn: {
+        component: StarOn
+      },
+      StarOff: {
+        component: StarOff
       }
     }
   }

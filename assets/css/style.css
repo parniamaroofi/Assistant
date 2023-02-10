@@ -55,7 +55,7 @@ textarea{
   font-size: 1.1rem !important;
 }
 .fs-large {
-  font-size: 0.1rem !important;
+  font-size: 1rem !important;
 }
 .fs-medium{
   font-size: 0.85rem !important;
@@ -65,6 +65,9 @@ textarea{
 }
 .fs-xsmall {
   font-size: 0.75rem !important;
+}
+.fs-xxsmall {
+  font-size: 0.7rem !important;
 }
 
 /* button style */
@@ -87,4 +90,12 @@ textarea{
 
 .pointer{
   cursor: pointer;
+}
+
+.light-icon  path{
+  stroke: #fff;
+}
+
+.primary-icon path {
+  stroke: #00acc1;
 }

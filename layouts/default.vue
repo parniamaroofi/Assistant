@@ -1,5 +1,5 @@
 <template>
-  <div class="v-application">
+  <div class="v-application" data-app>
     <!-- <page-header /> -->
     <Sidebar />
     <nuxt class="main" />

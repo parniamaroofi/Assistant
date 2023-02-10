@@ -26,6 +26,7 @@
           label="*Your note"
           placeholder="Your note..."
         ></v-textarea>
+        <!-- <wysiwyg v-model="newNote.text" /> -->
         <div class="save-button text-right mt-6">
           <v-btn
             height="45"
@@ -36,54 +37,9 @@
             <v-icon class="mr-1" small>mdi-check-underline</v-icon>Save</v-btn
           >
         </div>
-        <!-- <v-row class="mt-8">
-          <v-col md="6" cols="12">
-            <transition name="fade">
-              <span v-show="error" class="error"
-                ><i class="material-icons red-text left">cancel</i>Oops! you
-                must fill in the name field and the note field.</span
-              >
-            </transition>
-            <transition name="fade">
-              <span v-show="done" class="done"
-                ><i class="material-icons green-text left">check_circle</i
-                >Saved!</span
-              >
-            </transition>
-          </v-col>
-         
-        </v-row> -->
       </div>
     </v-card>
-    <!-- <div class="show-note">
-      <label>Saved Notes</label>
-      <br /><br />
 
-      <div
-        class="card note-box"
-        v-for="(note, index) in notes"
-        v-if="note.name"
-      >
-        <div class="content">
-          <ul>
-            <li><i class="material-icons left">person</i> {{ note.name }}</li>
-            <li v-if="note.subject">
-              <i class="material-icons left">subject</i> {{ note.subject }}
-            </li>
-            <li class="text">
-              <i class="material-icons left">rate_review</i>
-              {{ note.note_text }}
-            </li>
-          </ul>
-        </div>
-        <div class="card-action">
-          <span class="left" id="date-time">{{ note.time }}</span>
-          <span class="del-note right" v-on:click="deleteNote(index)"
-            ><i class="material-icons" title="delete">delete_forever</i></span
-          >
-        </div>
-      </div>
-    </div> -->
     <v-snackbar
       top
       right
@@ -130,8 +86,11 @@ export default {
         };
         this.snackbar = true;
       } else {
-        this.notes = JSON.parse(localStorage.getItem("notes"));
+        this.notes = localStorage.getItem("notes")
+          ? JSON.parse(localStorage.getItem("notes"))
+          : [];
         this.notes.push({
+          id: Date.now(),
           author: this.newNote.name,
           subject: this.newNote.subject,
           text: this.newNote.text,

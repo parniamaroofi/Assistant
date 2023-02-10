@@ -23,34 +23,53 @@
       <v-divider></v-divider>
 
       <v-list nav dense>
-        <v-list-item to="/">
-          <v-list-item-icon>
-            <v-icon class="mr-4">$Home</v-icon>
+        <v-list-item v-for="(item, index) in items" :key="index" :to="item.to">
+          <v-list-item-icon class="light-icon">
+            <v-icon class="mr-4">{{ item.icon }}</v-icon>
           </v-list-item-icon>
-          <v-list-item-title class="fs-xsmall">Home</v-list-item-title>
-        </v-list-item>
-        <v-list-item to="/newNote">
-          <v-list-item-icon>
-            <v-icon class="mr-4">$Note</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title class="fs-xsmall">New note</v-list-item-title>
-        </v-list-item>
-        <v-list-item to="/savedNotes">
-          <v-list-item-icon>
-            <v-icon class="mr-4">$Bookmark</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title class="fs-xsmall">Saved notes</v-list-item-title>
-        </v-list-item>
-        <v-list-item to="/chat">
-          <v-list-item-icon>
-            <v-icon class="mr-4">$Chat</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title class="fs-xsmall">Chat room</v-list-item-title>
+          <v-list-item-title class="fs-xsmall">{{
+            item.title
+          }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      items: [
+        {
+          icon: "$Home",
+          title: "Home",
+          to: "/"
+        },
+        {
+          icon: "$Note",
+          title: "New Note",
+          to: "/newNote"
+        },
+        {
+          icon: "$Bookmark",
+          title: "Saved Notes",
+          to: "/savedNotes"
+        },
+        {
+          icon: "$StarOff",
+          title: "Favorite Notes",
+          to: "/favoriteNotes"
+        },
+        {
+          icon: "$Chat",
+          title: "Chat Rooms",
+          to: "/chat"
+        }
+      ]
+    };
+  }
+};
+</script>
 
 <style lang="scss">
 .sidebar {

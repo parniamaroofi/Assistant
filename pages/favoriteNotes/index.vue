@@ -1,30 +1,28 @@
 <template>
   <div>
-    <div class="all-notes">
+    <div class="favorite-notes">
       <br /><br />
       <v-card class="common-card note-form">
         <div class="card-title">
-          <v-icon class="ml-1" color="#00acc1"
-            >mdi-checkbox-marked-outline</v-icon
-          >
-          Saved notes
+          <v-icon class="primary-icon ml-1" color="#00acc1">$StarOff</v-icon>
+          Favorite Notes
           <span class="fs-medium grey--text"
             >({{
-              notes.length + (notes.length == 1 ? " note" : " notes")
+              favorites.length + (favorites.length == 1 ? " note" : " notes")
             }})</span
           >
         </div>
         <div class="pa-8">
           <div
-            v-if="!notes.length"
+            v-if="!favorites.length"
             class="grey--text text--lighten-1 text-center mt-16"
           >
-            There is no note yet!
+            There is no favorite note yet!
           </div>
           <div v-else>
             <div
               class="note-box mb-6"
-              v-for="(note, index) in notes"
+              v-for="(note, index) in favorites"
               :key="index"
             >
               <div>
@@ -38,24 +36,10 @@
                   </v-col>
                   <v-col class="text-right">
                     <span
-                      v-if="favoritesIds.includes(note.id)"
                       @click="removeNoteFromFavorites(note)"
                       class="mr-2 pointer"
                       ><v-icon>$StarOn</v-icon></span
                     >
-
-                    <v-tooltip v-else top>
-                      <template v-slot:activator="{ on, attrs }">
-                        <span
-                          @click="addNoteToFavorites(note)"
-                          class="mr-2 pointer"
-                          v-bind="attrs"
-                          v-on="on"
-                          ><v-icon>$StarOff</v-icon></span
-                        >
-                      </template>
-                      <span class="fs-xxsmall">Add To Favorites</span>
-                    </v-tooltip>
                   </v-col>
                 </v-row>
                 <v-row>
@@ -73,12 +57,9 @@
                   {{ note.text }}
                 </p>
                 <v-divider></v-divider>
-                <div class="d-flex justify-space-between">
+                <div>
                   <p class="fs-xsmall grey--text text--darken-2 mt-4 mb-0">
                     {{ note.time }}
-                  </p>
-                  <p class="mt-2 mb-0 pointer" @click="deleteNote(index)">
-                    <v-icon>$Trash</v-icon>
                   </p>
                 </div>
               </div>
@@ -94,44 +75,29 @@ export default {
   data() {
     return {
       notes: [],
-      favorites: [],
-      favoritesIds: []
+      favorites: []
     };
   },
   methods: {
     deleteNote(index) {
-      if (this.favoritesIds.includes(this.notes[index].id)) {
-        let favIndex = this.favoritesIds.indexOf(this.notes[index].id);
-        this.favorites.splice(favIndex, 1);
-        this.favoritesIds.splice(favIndex, 1);
-        localStorage.setItem("favorites", JSON.stringify(this.favorites));
-        localStorage.setItem("favoritesIds", JSON.stringify(this.favoritesIds));
-      }
       this.notes.splice(index, 1);
       localStorage.setItem("notes", JSON.stringify(this.notes));
     },
     addNoteToFavorites(note) {
-      this.favorites.push(note);
-      this.favoritesIds.push(note.id);
+      this.favorites.push(note.id);
       localStorage.setItem("favorites", JSON.stringify(this.favorites));
-      localStorage.setItem("favoritesIds", JSON.stringify(this.favoritesIds));
     },
     removeNoteFromFavorites(note) {
       let index = this.favoritesIds.indexOf(note.id);
-      if (index > -1) {
-        this.favorites.splice(index, 1);
-        this.favoritesIds.splice(index, 1);
-        localStorage.setItem("favorites", JSON.stringify(this.favorites));
-        localStorage.setItem("favoritesIds", JSON.stringify(this.favoritesIds));
-      }
+      this.favorites.splice(index, 1);
+      this.favoritesIds.splice(index, 1);
+      localStorage.setItem("favorites", JSON.stringify(this.favorites));
+      localStorage.setItem("favoritesIds", JSON.stringify(this.favoritesIds));
     }
   },
   mounted() {
-    this.notes = localStorage.getItem("notes")
-      ? JSON.parse(localStorage.getItem("notes")).reverse()
-      : "";
     this.favorites = localStorage.getItem("favorites")
-      ? JSON.parse(localStorage.getItem("favorites"))
+      ? JSON.parse(localStorage.getItem("favorites")).reverse()
       : [];
     this.favoritesIds = localStorage.getItem("favoritesIds")
       ? JSON.parse(localStorage.getItem("favoritesIds"))
@@ -141,7 +107,7 @@ export default {
 </script>
 
 <style lang="scss">
-.all-notes {
+.favorite-notes {
   .note-box {
     background: rgb(243, 248, 248);
     background: linear-gradient(
