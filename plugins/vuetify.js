@@ -9,8 +9,9 @@ import SquareCheck from "./../components/icons/SquareCheck.vue";
 import Pen from "./../components/icons/Pen.vue";
 import User from "./../components/icons/User.vue";
 import Trash from "./../components/icons/Trash.vue";
-import StarOn from "./../components/icons/StarOn.vue";
-import StarOff from "./../components/icons/StarOff.vue";
+import FilledStar from "./../components/icons/FilledStar.vue";
+import OutlinedStar from "./../components/icons/OutlinedStar.vue";
+import Text from "./../components/icons/Text.vue";
 
 Vue.use(Vuetify);
 
@@ -55,11 +56,14 @@ export default new Vuetify({
       Trash: {
         component: Trash
       },
-      StarOn: {
-        component: StarOn
+      FilledStar: {
+        component: FilledStar
       },
-      StarOff: {
-        component: StarOff
+      OutlinedStar: {
+        component: OutlinedStar
+      },
+      Text: {
+        component: Text
       }
     }
   }

@@ -56,7 +56,7 @@ export default {
           to: "/savedNotes"
         },
         {
-          icon: "$StarOff",
+          icon: "$OutlinedStar",
           title: "Favorite Notes",
           to: "/favoriteNotes"
         },

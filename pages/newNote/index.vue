@@ -1,9 +1,13 @@
 <template>
   <div id="new-note">
     <br /><br />
+    <!-- Form card -->
     <v-card class="common-card note-form">
+      <!-- Card title -->
       <div class="card-title">New note<v-icon class="ml-1">$Pen</v-icon></div>
+      <!-- Form Fields -->
       <div class="pa-8 pt-16">
+        <!-- Author name field -->
         <v-text-field
           v-model="newNote.name"
           outlined
@@ -11,6 +15,7 @@
           placeholder="Name"
           style="width:350px;"
         ></v-text-field>
+        <!-- Note subject field -->
         <v-text-field
           v-model="newNote.subject"
           outlined
@@ -18,6 +23,7 @@
           placeholder="Subject (Optional)"
           style="width:350px;"
         ></v-text-field>
+        <!-- Note text wysivyg -->
         <v-textarea
           v-model="newNote.text"
           rows="6"
@@ -26,20 +32,26 @@
           label="*Your note"
           placeholder="Your note..."
         ></v-textarea>
-        <!-- <wysiwyg v-model="newNote.text" /> -->
-        <div class="save-button text-right mt-6">
+        <!-- <wysiwyg
+          v-model="newNote.text"
+          placeholder="Your note..."
+          class="mb-16"
+        /> -->
+
+        <!-- The button to save the note -->
+        <div class="save-button mt-6">
           <v-btn
             height="45"
             style="width:100%"
             color="primary"
-            @click="saveNote"
+            @click="CheckData()"
           >
             <v-icon class="mr-1" small>mdi-check-underline</v-icon>Save</v-btn
           >
         </div>
       </div>
     </v-card>
-
+    <!-- The toastification to show status of save operation -->
     <v-snackbar
       top
       right
@@ -76,45 +88,48 @@ export default {
     };
   },
   methods: {
-    saveNote: function() {
-      let dt = new Date();
+    // the function to check required fields is filled or not
+    CheckData() {
       if (!this.newNote.name || !this.newNote.text) {
-        this.notif = {
-          color: "error",
-          text: "Oops! you must fill in the required fields.",
-          icon: "mdi-alert-decagram"
-        };
-        this.snackbar = true;
+        this.showError();
       } else {
-        this.notes = localStorage.getItem("notes")
-          ? JSON.parse(localStorage.getItem("notes"))
-          : [];
-        this.notes.push({
-          id: Date.now(),
-          author: this.newNote.name,
-          subject: this.newNote.subject,
-          text: this.newNote.text,
-          time: dt.toLocaleString()
-        });
-        this.notif = {
-          color: "success",
-          text: "Your note successfully saved.",
-          icon: "mdi-check-decagram"
-        };
-        this.snackbar = true;
-
-        localStorage.setItem("notes", JSON.stringify(this.notes));
-
-        this.newNote = {};
+        this.saveNote();
+        this.showSuccess();
       }
     },
+    // the function to save note data
+    saveNote() {
+      this.notes = localStorage.getItem("notes")
+        ? JSON.parse(localStorage.getItem("notes"))
+        : [];
+      this.notes.push({
+        id: Date.now(),
+        author: this.newNote.name,
+        subject: this.newNote.subject,
+        text: this.newNote.text,
+        time: new Date().toLocaleString()
+      });
+      localStorage.setItem("notes", JSON.stringify(this.notes));
 
-    deleteNote: function(index) {
-      if (confirm("Do you really want to delete this note?")) {
-        notes.splice(index, 1);
-      } else {
-        console.log("The operation was canceled!");
-      }
+      this.newNote = {};
+    },
+    // the function to show successfull operation toast
+    showSuccess() {
+      this.notif = {
+        color: "success",
+        text: "Your note successfully saved.",
+        icon: "mdi-check-decagram"
+      };
+      this.snackbar = true;
+    },
+    // the function to show un-successfull operation toast
+    showError() {
+      this.notif = {
+        color: "error",
+        text: "Oops! you must fill in the required fields.",
+        icon: "mdi-alert-decagram"
+      };
+      this.snackbar = true;
     }
   }
 };
@@ -127,5 +142,22 @@ export default {
 .v-snack__wrapper {
   box-shadow: none !important;
   border-radius: 8px !important;
+}
+.editr {
+  border: 1px solid #a7a7a7 !important;
+  border-radius: 10px !important;
+  height: 200px;
+  .editr--toolbar {
+    border-radius: 10px !important;
+    div {
+      a {
+        border-radius: 5px !important;
+      }
+    }
+  }
+
+  .editr--content {
+    font-size: 0.9rem !important;
+  }
 }
 </style>
