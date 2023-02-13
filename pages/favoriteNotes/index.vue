@@ -62,9 +62,10 @@
                 </v-col>
               </v-row>
               <!-- Note text -->
-              <p class="fs-medium grey--text text--darken-2 mt-4">
-                {{ note.text }}
-              </p>
+              <p
+                class="fs-medium grey--text text--darken-2 mt-4"
+                v-html="note.text"
+              ></p>
               <v-divider></v-divider>
               <!-- Note added date and time -->
               <div>
@@ -122,6 +123,12 @@ export default {
     border-radius: 6px;
     padding: 15px;
     border: 1px solid #d8d8d8ee;
+
+    ul {
+      li {
+        list-style: disc;
+      }
+    }
   }
 }
 </style>

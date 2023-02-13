@@ -71,9 +71,10 @@
                   </v-col>
                 </v-row>
                 <!-- Note text -->
-                <p class="fs-medium grey--text text--darken-2 mt-4">
-                  {{ note.text }}
-                </p>
+                <p
+                  class="fs-medium grey--text text--darken-2 mt-4"
+                  v-html="note.text"
+                ></p>
                 <v-divider></v-divider>
 
                 <div class="d-flex justify-space-between">
@@ -133,7 +134,7 @@ export default {
   mounted() {
     // Get notes list
     this.notes = localStorage.getItem("notes")
-      ? JSON.parse(localStorage.getItem("notes")).reverse()
+      ? JSON.parse(localStorage.getItem("notes"))
       : "";
     // Get favorite notes list
     this.favorites = localStorage.getItem("favorites")
@@ -159,6 +160,12 @@ export default {
     border-radius: 6px;
     padding: 15px;
     border: 1px solid #d8d8d8ee;
+
+    ul {
+      li {
+        list-style: disc;
+      }
+    }
   }
 }
 </style>

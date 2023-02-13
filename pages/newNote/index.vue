@@ -24,19 +24,15 @@
           style="width:350px;"
         ></v-text-field>
         <!-- Note text wysivyg -->
-        <v-textarea
+        <!-- <v-textarea
           v-model="newNote.text"
           rows="6"
           outlined
           no-resize
           label="*Your note"
           placeholder="Your note..."
-        ></v-textarea>
-        <!-- <wysiwyg
-          v-model="newNote.text"
-          placeholder="Your note..."
-          class="mb-16"
-        /> -->
+        ></v-textarea> -->
+        <ckeditor v-model="newNote.text" :config="editorConfig"></ckeditor>
 
         <!-- The button to save the note -->
         <div class="save-button mt-6">
@@ -84,6 +80,22 @@ export default {
         color: "success",
         text: "",
         icon: ""
+      },
+      editorConfig: {
+        toolbar: [
+          ["Bold", "Italic", "Strike"],
+          ["RemoveFormat"],
+          [
+            "NumberedList",
+            "BulletedList",
+            "Outdent",
+            "Indent",
+            "Blockquote",
+            "SpecialChar",
+            "HorizontalRule",
+            "Table"
+          ]
+        ]
       }
     };
   },
@@ -102,7 +114,7 @@ export default {
       this.notes = localStorage.getItem("notes")
         ? JSON.parse(localStorage.getItem("notes"))
         : [];
-      this.notes.push({
+      this.notes.unshift({
         id: Date.now(),
         author: this.newNote.name,
         subject: this.newNote.subject,
@@ -143,21 +155,20 @@ export default {
   box-shadow: none !important;
   border-radius: 8px !important;
 }
-.editr {
-  border: 1px solid #a7a7a7 !important;
-  border-radius: 10px !important;
-  height: 200px;
-  .editr--toolbar {
-    border-radius: 10px !important;
-    div {
-      a {
-        border-radius: 5px !important;
-      }
-    }
-  }
-
-  .editr--content {
-    font-size: 0.9rem !important;
-  }
+.cke_inner,
+.cke_top,
+.cke_reset {
+  border-radius: 12px !important;
+  border-bottom: 0 !important;
+}
+.cke_button {
+  border-radius: 6px !important;
+}
+.cke_chrome {
+  border-radius: 12px !important;
+  border: 1px solid #9d9d9d !important;
+}
+.cke_bottom {
+  display: none !important;
 }
 </style>

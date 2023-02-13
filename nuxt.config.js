@@ -48,13 +48,12 @@ export default {
    */
   css: [
     "@mdi/font/css/materialdesignicons.css",
-    "vue-wysiwyg/dist/vueWysiwyg.css",
     { src: "~assets/css/style.css" }
   ],
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ["~plugins/vuetify.js", "~plugins/wysivyg.js"],
+  plugins: ["~plugins/vuetify.js", "~plugins/ckeditor.js"],
   /*
    ** Nuxt.js dev-modules
    */
