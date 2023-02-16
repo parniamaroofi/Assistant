@@ -12,6 +12,7 @@ import Trash from "./../components/icons/Trash.vue";
 import FilledStar from "./../components/icons/FilledStar.vue";
 import OutlinedStar from "./../components/icons/OutlinedStar.vue";
 import Text from "./../components/icons/Text.vue";
+import Search from "./../components/icons/Search.vue";
 
 Vue.use(Vuetify);
 
@@ -64,6 +65,9 @@ export default new Vuetify({
       },
       Text: {
         component: Text
+      },
+      Search: {
+        component: Search
       }
     }
   }

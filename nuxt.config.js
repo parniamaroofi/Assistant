@@ -48,6 +48,7 @@ export default {
    */
   css: [
     "@mdi/font/css/materialdesignicons.css",
+    { src: "~assets/scss/style.scss" },
     { src: "~assets/css/style.css" }
   ],
   /*

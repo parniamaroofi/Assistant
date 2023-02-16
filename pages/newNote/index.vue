@@ -121,7 +121,10 @@ export default {
         text: this.newNote.text,
         time: new Date().toLocaleString()
       });
-      localStorage.setItem("notes", JSON.stringify(this.notes));
+      localStorage.setItem(
+        "notes",
+        JSON.stringify(this.notes.sort((a, b) => a.id > b.id))
+      );
 
       this.newNote = {};
     },
