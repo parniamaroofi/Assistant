@@ -33,7 +33,7 @@
               <div>
                 <v-row class="pt-4">
                   <!-- Note author name -->
-                  <v-col>
+                  <v-col class="pb-0">
                     <p
                       class="fs-small grey--text text--darken-1 mb-2 text-capitalize"
                     >
@@ -41,7 +41,7 @@
                     </p>
                   </v-col>
                   <!-- Star Icon to ADD note to or REMOVE note from favorites list -->
-                  <v-col class="text-right">
+                  <v-col class="text-right pb-0">
                     <span
                       v-if="favoritesIds.includes(note.id)"
                       @click="removeNoteFromFavorites(note)"
@@ -61,7 +61,7 @@
                 </v-row>
                 <!-- Note subject -->
                 <v-row>
-                  <v-col>
+                  <v-col class="pt-0">
                     <p class="fs-small grey--text text--darken-1">
                       <v-icon class="mr-2 grey--text text--darken-1"
                         >$Text</v-icon
@@ -159,7 +159,7 @@ export default {
     );
     border-radius: 6px;
     padding: 15px;
-    border: 1px solid #d8d8d8ee;
+    box-shadow: 0 3px 3px #ccc;
 
     ul {
       li {

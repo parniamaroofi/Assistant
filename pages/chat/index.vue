@@ -8,6 +8,8 @@
             placeholder="Search..."
             hide-details
             outlined
+            rounded
+            style="background-color: #fff"
             v-model="filter"
           >
             <template v-slot:prepend-inner>
@@ -54,21 +56,43 @@
 
       <div class="private-chat ma-4">
         <div class="chat-header d-flex">
-          <img
-            width="45"
-            height="45"
-            src="~assets/image/user-avatar.png"
-            alt=""
-          />
+          <img width="45" height="45" src="~assets/image/user-avatar.png" />
           <div class="mt-1 ml-3">
             <p class="fs-medium mb-0">Romina</p>
             <p class="primary--text fs-xxsmall">Online</p>
           </div>
         </div>
-        <v-divider class="my-2"></v-divider>
-        <div class="chat-content"></div>
+
+        <v-divider class="mb-2"></v-divider>
+
+        <div class="chat-content">
+          <v-row class="messages">
+            <v-col>
+              <div class="message-box user-message">Hello dear :)</div>
+              <div class="fs-xxsmall grey--text mt-1">8:12</div>
+            </v-col>
+          </v-row>
+          <v-row class="messages">
+            <v-col>
+              <div class="float-right" style="width: fit-content">
+                <div class="message-box own-message">
+                  Hey! what's up?
+                </div>
+                <div class="fs-xxsmall grey--text mt-1 text-right">8:14</div>
+              </div>
+            </v-col>
+          </v-row>
+        </div>
+
         <div class="chat-footer">
-          <v-text-field placeholder="Write..." outlined v-model="messageText">
+          <v-text-field
+            rounded
+            style="background-color: #fff"
+            placeholder="Write Your Message..."
+            outlined
+            hide-details
+            v-model="messageText"
+          >
             <template v-slot:append>
               <div>
                 <v-btn
@@ -135,7 +159,12 @@ export default {
     border: 1px solid #eee;
     margin-top: 3%;
     border-radius: 12px;
-    background-color: #f6f6f6;
+    background: rgb(243, 248, 248);
+    background: linear-gradient(
+      57deg,
+      rgba(243, 248, 248, 1) 0%,
+      rgba(211, 233, 227, 1) 100%
+    );
     display: flex;
 
     .chats-list {
@@ -153,20 +182,42 @@ export default {
         border-radius: 50%;
       }
       &:hover {
-        background-color: #eee;
+        background-color: #dbe3ff;
       }
     }
 
     .private-chat {
-      background-color: #fff;
       border-radius: 10px;
       width: 100%;
       height: 85vh;
-      padding: 20px;
+      .chat-header {
+        img {
+          border-radius: 50%;
+        }
+      }
 
       .chat-content {
         height: 80%;
         width: 100%;
+        padding-top: 15px;
+        .message-box {
+          width: fit-content;
+          max-width: 250px;
+          min-width: 150px;
+          margin-top: 3px;
+          font-size: 0.8rem;
+          padding: 12px;
+        }
+        .user-message {
+          color: #fff;
+          background-color: #00acc1;
+          border-radius: 12px 12px 12px 0;
+        }
+        .own-message {
+          color: #272727;
+          background-color: #fff;
+          border-radius: 12px 12px 0 12px;
+        }
       }
 
       .chat-footer {

@@ -20,12 +20,12 @@ input {
   font-size: 0.9rem !important;
   margin-bottom: 0 !important;
 }
-.v-input__slot {
-  border-radius: 10px !important;
-}
 
-.v-label {
-  font-size: 0.95rem !important;
+.chats {
+  .v-input__slot,
+  fieldset {
+    border: 0px !important;
+  }
 }
 
 .fade {
@@ -47,6 +47,9 @@ input {
 /*# sourceMappingURL=style.css.map */
 
 /* font size */
+.fs-xxlarge {
+  font-size: 2rem !important;
+}
 .fs-xlarge {
   font-size: 1.1rem !important;
 }

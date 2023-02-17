@@ -6,7 +6,7 @@
       <!-- Card title -->
       <div class="card-title">New note<v-icon class="ml-1">$Pen</v-icon></div>
       <!-- Form Fields -->
-      <div class="pa-8 pt-16">
+      <div class="custom-input pa-8 pt-16">
         <!-- Author name field -->
         <v-text-field
           v-model="newNote.name"
@@ -151,6 +151,15 @@ export default {
 </script>
 
 <style lang="scss">
+.custom-input {
+  .v-input__slot {
+    border-radius: 10px !important;
+  }
+
+  .v-label {
+    font-size: 0.95rem !important;
+  }
+}
 .save-button {
   width: 100%;
 }

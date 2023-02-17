@@ -5,7 +5,9 @@
         <img width="500" src="~assets/image/Taking notes-rafiki.png" alt="" />
       </div>
       <div class="mt-15 pt-2">
-        <h4>Welcome to <span class="primary--text">EasyNote</span>.</h4>
+        <h4 class="fs-xxlarge">
+          Welcome to <span class="primary--text">EasyNote</span>.
+        </h4>
 
         <p class="mt-8 mr-10">
           Save time for more important things in your life by easily saving your
