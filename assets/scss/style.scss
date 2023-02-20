@@ -102,3 +102,144 @@ input {
     stroke: #00acc1;
   }
 }
+
+// Page
+.chats {
+  .chat-card {
+    height: 90vh;
+    box-shadow: 0 3px 3px #ccc;
+    border: 1px solid #eee;
+    margin-top: 3%;
+    border-radius: 12px;
+    outline: none;
+    background: rgb(243, 248, 248);
+    background: linear-gradient(
+      57deg,
+      rgba(243, 248, 248, 1) 0%,
+      rgba(211, 233, 227, 1) 100%
+    );
+    display: flex;
+
+    .chats-list {
+      width: 550px;
+      height: 100%;
+      padding: 20px 10px;
+      border-radius: 12px 0 0 12px;
+      background: rgb(243, 248, 248);
+      background: linear-gradient(
+        57deg,
+        rgba(243, 248, 248, 1) 0%,
+        rgba(211, 233, 227, 1) 100%
+      );
+    }
+
+    .chat-box {
+      padding: 10px 11px 0;
+      border-radius: 7px;
+      cursor: pointer;
+      img {
+        border-radius: 50%;
+      }
+      &:hover {
+        background-color: #dbe3ff;
+      }
+    }
+
+    .chat-div {
+      border-radius: 10px;
+      width: 100%;
+      height: 85vh;
+      position: relative;
+
+      .v-skeleton-loader__image {
+        width: 100%;
+        height: 85vh;
+        z-index: 100 !important;
+        background-color: #d5e8ed;
+      }
+
+      .chat {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+
+        &-header {
+          img {
+            border-radius: 50%;
+          }
+        }
+
+        &-content {
+          height: 68.5vh;
+          width: 100%;
+          padding: 0 10px;
+          overflow-y: auto;
+          overflow-x: hidden;
+          scroll-behavior: smooth;
+          &::-webkit-scrollbar {
+            width: 5px;
+            display: none;
+          }
+          &::-webkit-scrollbar-thumb {
+            border: 8px;
+            background-color: rgba($color: #000000, $alpha: 0.25);
+          }
+          &::-webkit-scrollbar-track {
+            background-color: rgba($color: #000000, $alpha: 0.2);
+          }
+          .messages-by-date {
+            position: relative;
+            text-align: center;
+            .date-chip {
+              color: #fff;
+              font-size: 0.67rem;
+              background-color: rgba($color: #000000, $alpha: 0.3);
+              position: sticky;
+              top: 10px;
+              margin: 0 auto;
+            }
+          }
+          .message-box {
+            width: fit-content;
+            max-width: 350px;
+            min-width: 120px;
+            margin-top: 3px;
+            font-size: 0.78rem;
+            padding: 10px 12px;
+            text-align: left;
+          }
+          .user-message {
+            color: #fff;
+            background-color: #00acc1;
+            border-radius: 12px 12px 12px 0;
+          }
+          .own-message {
+            color: #272727;
+            background-color: #fff;
+            border-radius: 12px 12px 0 12px;
+          }
+        }
+
+        &-footer {
+          .v-input__append-inner {
+            margin: 0 !important;
+          }
+        }
+      }
+
+      .noChat-chip {
+        color: #fff;
+        font-size: 0.8rem;
+        background-color: rgba($color: #000, $alpha: 0.2);
+        position: sticky;
+        top: 10px;
+        margin: 0 auto;
+        position: absolute;
+        top: 50%;
+        right: 50%;
+        transform: translateX(50%);
+      }
+    }
+  }
+}

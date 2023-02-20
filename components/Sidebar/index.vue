@@ -32,6 +32,12 @@
           }}</v-list-item-title>
         </v-list-item>
       </v-list>
+      <p
+        class="fs-xxsmall white--text"
+        style="position: absolute; bottom: 0; left: 22px"
+      >
+        Design & develop by Parnia Maroofi
+      </p>
     </v-navigation-drawer>
   </div>
 </template>

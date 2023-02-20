@@ -15,6 +15,7 @@
     "ckeditor4-vue": "^2.2.1",
     "material-design-icons-iconfont": "^6.7.0",
     "nuxt": "^2.0.0",
+    "uuid": "^9.0.0",
     "vue-wysiwyg": "^1.7.2"
   },
   "devDependencies": {
