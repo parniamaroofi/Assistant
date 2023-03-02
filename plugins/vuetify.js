@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
+
+// Icons
 import Home from "./../components/icons/Home.vue";
 import Note from "./../components/icons/Note.vue";
 import Chat from "./../components/icons/Chat.vue";
@@ -13,6 +15,9 @@ import FilledStar from "./../components/icons/FilledStar.vue";
 import OutlinedStar from "./../components/icons/OutlinedStar.vue";
 import Text from "./../components/icons/Text.vue";
 import Search from "./../components/icons/Search.vue";
+import Close from "./../components/icons/Close.vue";
+import ArrowRight from "./../components/icons/ArrowRight.vue";
+import PenNoLine from "./../components/icons/PenNoLine.vue";
 
 Vue.use(Vuetify);
 
@@ -26,7 +31,8 @@ export default new Vuetify({
     },
     themes: {
       light: {
-        primary: "#00acc1"
+        primary: "#00acc1",
+        secondary: "#00838f"
       }
     }
   },
@@ -68,6 +74,15 @@ export default new Vuetify({
       },
       Search: {
         component: Search
+      },
+      Close: {
+        component: Close
+      },
+      ArrowRight: {
+        component: ArrowRight
+      },
+      PenNoLine: {
+        component: PenNoLine
       }
     }
   }

@@ -92,8 +92,7 @@ export default {
             "Indent",
             "Blockquote",
             "SpecialChar",
-            "HorizontalRule",
-            "Table"
+            "HorizontalRule"
           ]
         ]
       }
