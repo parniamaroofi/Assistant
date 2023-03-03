@@ -17,7 +17,7 @@ html {
 input {
   border: none !important;
   box-shadow: none !important;
-  font-size: 0.9rem !important;
+  font-size: 0.85rem !important;
   margin-bottom: 0 !important;
 }
 
@@ -84,6 +84,7 @@ input {
   box-shadow: none !important;
   border-radius: 12px !important;
   text-transform: none !important;
+  font-size: 0.8rem !important;
 }
 
 /* common card style */
@@ -144,6 +145,15 @@ input {
       );
       transition: 0.5s all;
 
+      .all-chats {
+        max-height: 505px;
+        overflow-y: auto;
+        padding-bottom: 90px;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+
       .new-btn {
         min-width: 53px;
         width: 53px;
@@ -168,7 +178,7 @@ input {
       position: absolute;
       top: 0;
       right: 0;
-      transition: 0.2s all;
+      transition: 0.25s all;
       border-radius: 12px 0 0 12px;
       z-index: 50;
       overflow: hidden;
@@ -181,33 +191,71 @@ input {
         min-width: 350px;
         background-color: transparent !important;
       }
+
+      .dialCode {
+        height: 40px;
+        width: 100%;
+        border: 1px solid #999;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &.active {
+          border: 2px solid #00acc1;
+        }
+      }
+
       .create-btn {
+        min-width: 0 !important;
         width: 90%;
         position: absolute;
         bottom: 20px;
         left: 50%;
         transform: translateX(-50%);
       }
-      .country-codes-box {
-        padding-right: 10px;
-        max-height: 200px;
-        overflow-y: scroll;
 
-        &::-webkit-scrollbar {
-          width: 5px;
-        }
-        &::-webkit-scrollbar-thumb {
-          border-radius: 3px;
-          background-color: #8a8a8a;
-        }
-        &::-webkit-scrollbar-track {
-          border-radius: 3px;
-          background-color: #cccccc;
-        }
+      .dialCodes-box {
+        box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
+          rgba(255, 255, 255, 0.6) -3px -3px 6px 1px inset;
+        border-radius: 10px;
+        height: 0;
+        overflow: hidden;
+        transition: 0.2s all;
 
-        .flag {
-          border-radius: 11px 0 11px 0;
-          transform: scale(0.35) translateY(5px) !important;
+        &.active {
+          height: 270px;
+        }
+        .dialCodes-list {
+          padding-right: 5px;
+          max-height: 200px;
+          height: 200px;
+          overflow-y: auto;
+
+          &::-webkit-scrollbar {
+            width: 5px;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 2px;
+            background-color: #b6b6b6;
+          }
+          &::-webkit-scrollbar-track {
+            border-radius: 2px;
+            background-color: #e1e1e1;
+          }
+
+          .list-item {
+            padding: 5px;
+            border-radius: 5px;
+            &:hover {
+              background-color: #dbe3ff;
+            }
+          }
+
+          .flag {
+            border-radius: 11px 0 11px 0;
+            transform: scale(0.38) translateY(5px) !important;
+          }
         }
       }
     }
@@ -451,4 +499,29 @@ input {
       transform: scale(1, 1);
     }
   }
+}
+
+.v-dialog {
+  border-radius: 12px !important;
+}
+.dialog-card {
+  border-radius: 12px !important;
+  background: rgb(243, 248, 248) !important;
+  background: linear-gradient(
+    57deg,
+    rgba(243, 248, 248, 1) 0%,
+    rgba(211, 233, 227, 1) 100%
+  ) !important;
+}
+
+// Number type inputs spin buttons
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+
+  margin: 0;
+}
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }

@@ -29,98 +29,198 @@
             No result for "{{ filter }}"
           </p>
         </div>
-        <div v-for="(chat, index) in filteredChats" :key="index">
-          <div @contextmenu="getClickedChatData(chat)">
-            <div
-              @click="selectChat(chat)"
-              @contextmenu="showListMenu"
-              class="chat-box d-flex"
-            >
-              <div>
-                <avatar
-                  :username="chat.sender"
-                  :size="54"
-                  rounded
-                  color="#fff"
-                  backgroundColor="#B0BEC5"
-                ></avatar>
-                <!-- <img width="55" src="~assets/image/user-avatar.png" /> -->
-              </div>
+        <div class="all-chats">
+          <div v-for="(chat, index) in filteredChats" :key="index">
+            <div @contextmenu="getClickedChatData(chat)">
               <div
-                class="ml-3 mt-2 d-flex justify-space-between"
-                style="width: 100%"
+                @click="selectChat(chat)"
+                @contextmenu="showListMenu"
+                class="chat-box d-flex"
               >
                 <div>
-                  <p class="fs-medium mb-0">{{ chat.sender }}</p>
-                  <div
-                    class="mb-0 fs-xsmall primary--text d-flex"
-                    v-if="chat.isTyping"
-                  >
-                    <span>Typing</span>
-                    <div class="snippet ml-3 mt-2" data-title=".dot-elastic">
-                      <div class="stage">
-                        <div class="dot-elastic"></div>
+                  <avatar
+                    :username="chat.sender"
+                    :size="52"
+                    rounded
+                    color="#fff"
+                  ></avatar>
+                  <!-- <img width="55" src="~assets/image/user-avatar.png" /> -->
+                </div>
+                <div
+                  class="ml-3 mt-2 d-flex justify-space-between"
+                  style="width: 100%"
+                >
+                  <div>
+                    <p class="fs-medium mb-0">{{ chat.sender }}</p>
+                    <div
+                      class="mb-0 fs-xsmall primary--text d-flex"
+                      v-if="chat.isTyping"
+                    >
+                      <span>Typing</span>
+                      <div class="snippet ml-3 mt-2" data-title=".dot-elastic">
+                        <div class="stage">
+                          <div class="dot-elastic"></div>
+                        </div>
                       </div>
                     </div>
+                    <p v-else class="mb-0 fs-xsmall grey--text">
+                      {{
+                        computedLastMessage(chat).length > 22
+                          ? computedLastMessage(chat).slice(0, 22) + "..."
+                          : computedLastMessage(chat)
+                      }}
+                    </p>
                   </div>
-                  <p v-else class="mb-0 fs-xsmall grey--text">
-                    {{
-                      computedLastMessage(chat).length > 22
-                        ? computedLastMessage(chat).slice(0, 22) + "..."
-                        : computedLastMessage(chat)
-                    }}
-                  </p>
-                </div>
 
-                <div class="text-right">
-                  <v-badge
-                    v-if="chat.unseenNumber"
-                    :content="chat.unseenNumber"
-                    class="mr-4"
-                  ></v-badge>
-                  <p class="mb-0" v-else>&nbsp;</p>
-                  <p class="mb-0 fs-xxsmall grey--text mt-1">
-                    {{
-                      computedChatDate(chat)
-                        ? computedDate(computedChatDate(chat))
-                        : ""
-                    }}
-                  </p>
+                  <div class="text-right">
+                    <v-badge
+                      v-if="chat.unseenNumber"
+                      :content="chat.unseenNumber"
+                      class="mr-4"
+                    ></v-badge>
+                    <p class="mb-0" v-else>&nbsp;</p>
+                    <p class="mb-0 fs-xxsmall grey--text mt-1">
+                      {{
+                        computedChatDate(chat)
+                          ? computedDate(computedChatDate(chat))
+                          : ""
+                      }}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <v-menu
-            v-model="listMenu"
-            :position-x="menuLocation.x"
-            :position-y="menuLocation.y"
-            absolute
-            offset-y
-          >
-            <v-list>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon>mdi-pin-outline</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title
-                  class="fs-small pl-2 grey--text text--darken-2"
-                  >Pin Chat
-                </v-list-item-title>
-              </v-list-item>
+            <v-menu
+              v-model="listMenu"
+              :position-x="menuLocation.x"
+              :position-y="menuLocation.y"
+              absolute
+              offset-y
+              transition="scale-transition"
+            >
+              <v-list>
+                <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon>mdi-pin-outline</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-title
+                    class="fs-small pl-2 grey--text text--darken-2"
+                    >Pin chat
+                  </v-list-item-title>
+                </v-list-item>
 
-              <v-list-item @click="userChatDialog = true">
-                <v-list-item-icon>
-                  <v-icon>mdi-message-arrow-left-outline</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title
-                  class="fs-small pl-2 grey--text text--darken-2"
-                  >Send Messege From {{ selectedItem.sender }}
-                </v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-          <v-divider class="my-1"></v-divider>
+                <v-list-item @click="deleteChatConfirmation = true">
+                  <v-list-item-icon>
+                    <v-icon>mdi-delete-outline</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-title
+                    class="fs-small pl-2 grey--text text--darken-2"
+                    >Delete chat
+                  </v-list-item-title>
+                </v-list-item>
+
+                <v-list-item @click="clearHistoryConfirmation = true">
+                  <v-list-item-icon>
+                    <v-icon>mdi-chat-remove-outline</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-title
+                    class="fs-small pl-2 grey--text text--darken-2"
+                    >Clear history
+                  </v-list-item-title>
+                </v-list-item>
+
+                <v-list-item @click="userChatDialog = true">
+                  <v-list-item-icon>
+                    <v-icon style="transform: translateY(2px)"
+                      >mdi-message-arrow-left-outline</v-icon
+                    >
+                  </v-list-item-icon>
+                  <v-list-item-title
+                    class="fs-small pl-2 grey--text text--darken-2"
+                    >Send messege from <b>{{ selectedItem.sender }}</b>
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+            <v-divider class="my-1"></v-divider>
+          </div>
         </div>
+
+        <!-- Dialog to get confirm to delete a chat  -->
+        <v-dialog v-model="deleteChatConfirmation" width="350">
+          <v-card class="dialog-card">
+            <v-card-title class="pb-2">
+              <div class="d-flex">
+                <avatar
+                  :size="40"
+                  :username="selectedItem.sender"
+                  color="#fff"
+                ></avatar>
+                <span class="fs-xlarge pl-3 pt-1">Delete chat</span>
+              </div>
+            </v-card-title>
+
+            <v-card-text>
+              <div v-if="deleteChatConfirmation">
+                <span class="fs-medium"
+                  >Are you sure you want to delete chat with
+                  <b>{{ selectedItem.sender }}</b
+                  >?</span
+                >
+
+                <div class="mt-5 text-right">
+                  <v-btn
+                    @click="deleteChatConfirmation = false"
+                    class="secondary--text"
+                    text
+                    >Cancel</v-btn
+                  >
+                  <v-btn @click="deleteChat()" class="error--text ml-1" text
+                    >Delete chat</v-btn
+                  >
+                </div>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+
+        <!-- Dialog to get confirm to clear history of a chat  -->
+        <v-dialog v-model="clearHistoryConfirmation" width="350">
+          <v-card class="dialog-card">
+            <v-card-title class="pb-2">
+              <div class="d-flex">
+                <avatar
+                  :size="40"
+                  :username="selectedItem.sender"
+                  color="#fff"
+                ></avatar>
+                <span class="fs-xlarge pl-3 pt-1">Clear history</span>
+              </div>
+            </v-card-title>
+
+            <v-card-text>
+              <div v-if="clearHistoryConfirmation">
+                <span class="fs-medium"
+                  >Are you sure you want to clear chat history with
+                  <b>{{ selectedItem.sender }}</b
+                  >?</span
+                >
+
+                <div class="mt-5 text-right">
+                  <v-btn
+                    @click="clearHistoryConfirmation = false"
+                    class="secondary--text"
+                    text
+                    >Cancel</v-btn
+                  >
+                  <v-btn @click="clearHistory()" class="error--text ml-1" text
+                    >Clear history</v-btn
+                  >
+                </div>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
 
         <div
           @click="userChatDialog = false"
@@ -129,12 +229,7 @@
         >
           &nbsp;
         </div>
-        <div
-          class="userChatDialog"
-          :class="userChatDialog ? 'active' : ''"
-          @keyup.esc="userChatDialog = false"
-          tabindex="1"
-        >
+        <div class="userChatDialog" :class="userChatDialog ? 'active' : ''">
           <v-card flat>
             <v-container
               class="dialog-body d-flex flex-column justify-space-between h-100"
@@ -189,7 +284,7 @@
             </v-container>
           </v-card>
         </div>
-        <v-btn @click="openNew = true" class="new-btn secondary lighten-1"
+        <v-btn @click="openNewChat()" class="new-btn secondary lighten-1"
           ><v-icon class="light-icon">$PenNoLine</v-icon></v-btn
         >
 
@@ -211,14 +306,13 @@
                 ></avatar>
 
                 <div>
-                  <v-text-field
-                    dense
-                    outlined
-                    hideDetails
-                    readonly
-                    style="width:67px !important"
-                    v-model="newChat.dialCode"
-                  ></v-text-field>
+                  <div
+                    @click="openDialCodes = !openDialCodes"
+                    :class="openDialCodes ? 'active' : ''"
+                    class="dialCode fs-medium grey--text text--darken-1 pointer"
+                  >
+                    {{ newChat.dialCode }}
+                  </div>
                 </div>
               </div>
               <div class="ml-3" style="width:78%">
@@ -229,6 +323,7 @@
                   hideDetails
                   placeholder="First name"
                   v-model="newChat.firstName"
+                  @focus="openDialCodes = false"
                 ></v-text-field>
 
                 <v-text-field
@@ -238,62 +333,93 @@
                   hideDetails
                   placeholder="Last name (optional)"
                   v-model="newChat.lastName"
+                  @focus="openDialCodes = false"
                 ></v-text-field>
 
                 <v-text-field
                   dense
                   outlined
                   hideDetails
+                  type="number"
                   placeholder="Phone number"
-                  v-model="newChat.phone"
+                  v-model="newChat.mobile"
+                  @keyup.enter="
+                    newChat.firstName && newChat.mobile ? createChat() : ''
+                  "
+                  @focus="openDialCodes = false"
                 ></v-text-field>
               </div>
             </div>
-            <div class="mt-6">
-              <v-text-field
-                dense
-                filled
-                rounded
-                placeholder="Search by country name..."
-                hideDetails
-                class="mb-4"
-              >
-                <template v-slot:prepend-inner>
-                  <div>
-                    <v-icon small class="mr-2 pt-1">$Search</v-icon>
-                  </div>
-                </template>
-                <template v-slot:append>
-                  <div class="pointer" v-if="filter" @click="filter = ''">
-                    <v-icon color="primary">mdi-close</v-icon>
-                  </div>
-                </template>
-              </v-text-field>
-
-              <div class="country-codes-box">
-                <div
-                  v-for="(item, index) in countryCodes"
-                  :key="index"
-                  class="d-flex justify-space-between fs-medium pointer"
-                  @click="newChat.dialCode = item.dial_code"
+            <div
+              class="dialCodes-box mt-5"
+              :class="openDialCodes ? 'active' : ''"
+            >
+              <div class="pa-3">
+                <v-text-field
+                  dense
+                  rounded
+                  placeholder="Search in country name..."
+                  hideDetails
+                  class="mb-2 no-border-field"
+                  style="background-color: #fff;"
+                  v-model="countryFilter"
                 >
-                  <p>
-                    <country-flag :country="item.code" size="small" />
-                    <span class="pl-1">
-                      {{
-                        item.name.length > 30
-                          ? item.name.slice(0, 30) + "..."
-                          : item.name
-                      }}s
-                    </span>
-                  </p>
-                  <p class="secondary--text">{{ item.dial_code }}</p>
+                  <template v-slot:prepend-inner>
+                    <div>
+                      <v-icon small class="mr-2" style="margin-top: 11px"
+                        >$Search</v-icon
+                      >
+                    </div>
+                  </template>
+                  <template v-slot:append>
+                    <div
+                      class="pointer"
+                      v-if="countryFilter"
+                      @click="countryFilter = ''"
+                    >
+                      <v-icon color="primary" small class="mt-1"
+                        >mdi-close</v-icon
+                      >
+                    </div>
+                  </template>
+                </v-text-field>
+                <div class="dialCodes-list">
+                  <div v-if="!filteredContries.length" class="text-center">
+                    <span class="fs-medium grey--text"
+                      >No result for "{{ countryFilter }}"</span
+                    >
+                  </div>
+                  <div
+                    v-for="(item, index) in filteredContries"
+                    :key="index"
+                    class="list-item d-flex justify-space-between fs-medium pointer"
+                    @click="selectDialCode(item)"
+                  >
+                    <p class="mb-0">
+                      <country-flag :country="item.code" size="small" />
+                      <span class="pl-1">
+                        {{
+                          item.name.length > 28
+                            ? item.name.slice(0, 28) + "..."
+                            : item.name
+                        }}
+                      </span>
+                    </p>
+                    <p class="secondary--text mb-0">{{ item.dial_code }}</p>
+                  </div>
                 </div>
               </div>
             </div>
           </v-card>
           <div>
-            <v-btn class="create-btn primary" height="52">Create</v-btn>
+            <v-btn
+              :disabled="!newChat.firstName || !newChat.mobile"
+              @click="createChat()"
+              class="create-btn primary"
+              height="52"
+            >
+              Submit</v-btn
+            >
           </div>
         </div>
       </div>
@@ -307,11 +433,18 @@
               :size="45"
               rounded
               color="#fff"
-              backgroundColor="#B0BEC5"
+              class="mb-3"
             ></avatar>
             <!-- <img width="45" height="45" src="~assets/image/user-avatar.png" /> -->
             <div class="mt-1 ml-3">
-              <p class="fs-medium mb-0">{{ selectedChat.sender }}</p>
+              <p
+                class="fs-medium mb-0"
+                :class="
+                  !selectedChat.lastSeen && !selectedChat.isOnline ? 'mt-2' : ''
+                "
+              >
+                {{ selectedChat.sender }}
+              </p>
               <div
                 v-if="selectedChat.isTyping"
                 class="primary--text fs-xxsmall d-flex mb-4"
@@ -329,7 +462,7 @@
               >
                 Online
               </p>
-              <p v-else class="grey--text fs-xxsmall">
+              <p v-else class="grey--text fs-xxsmall mb-0">
                 {{ selectedChat.lastSeen }}
               </p>
             </div>
@@ -473,7 +606,11 @@ export default {
         dialCode: "+98"
       },
       interval: "",
-      openNew: false
+      openNew: false,
+      openDialCodes: false,
+      countryFilter: "",
+      deleteChatConfirmation: false,
+      clearHistoryConfirmation: false
     };
   },
   methods: {
@@ -510,13 +647,14 @@ export default {
         this.chatLoading = true;
         this.selectedChat = chat;
         let index = this.chats.findIndex(x => x.id == this.selectedChat.id);
-        this.chats[index].unseenNumber = 0;
+
         this.setInLocalStorage();
         setTimeout(() => {
           this.scrollToEnd();
         }, 50);
         setTimeout(() => {
           this.chatLoading = false;
+          this.chats[index].unseenNumber = 0;
         }, 900);
       }
     },
@@ -531,17 +669,8 @@ export default {
     currentTime() {
       let today = new Date();
       let hour, minute;
-      if (today.getHours() < 10) {
-        hour = "0" + today.getHours();
-      } else {
-        hour = today.getHours();
-      }
-
-      if (today.getMinutes() < 10) {
-        minute = "0" + today.getMinutes();
-      } else {
-        minute = today.getMinutes();
-      }
+      hour = ("0" + today.getHours()).slice(-2);
+      minute = ("0" + today.getMinutes()).slice(-2);
 
       return hour + ":" + minute;
     },
@@ -708,6 +837,59 @@ export default {
       this.interval = setInterval(() => {
         this.chats[index].isTyping = false;
       }, 1000);
+    },
+    openNewChat() {
+      this.newChat = {
+        firstName: "",
+        lastName: "",
+        dialCode: "+98"
+      };
+      this.openNew = true;
+    },
+    selectDialCode(item) {
+      this.openDialCodes = false;
+      this.newChat.dialCode = item.dial_code;
+      setTimeout(() => {
+        this.countryFilter = "";
+      }, 1000);
+    },
+    createChat() {
+      this.chats.push({
+        id: uuidv4(),
+        sender: `${this.newChat.firstName} ${this.newChat.lastName}`,
+        mobile: this.newChat.dialCode + this.newChat.mobile,
+        unseenNumber: 0,
+        isTyping: false,
+        isOnline: false,
+        lastSeen: "",
+        lastAcivity: 0,
+        messagesByDate: []
+      });
+      this.setInLocalStorage();
+      this.openNew = false;
+      this.newChat = {
+        firstName: "",
+        lastName: "",
+        dialCode: "+98"
+      };
+    },
+    deleteChat() {
+      this.deleteChatConfirmation = false;
+      let index = this.chats.findIndex(x => x.id == this.selectedItem.id);
+      if (
+        this.selectedChat.id &&
+        this.selectedChat.id == this.selectedItem.id
+      ) {
+        this.selectedChat = {};
+      }
+      this.chats.splice(index, 1);
+      this.setInLocalStorage();
+    },
+    clearHistory() {
+      this.clearHistoryConfirmation = false;
+      let index = this.chats.findIndex(x => x.id == this.selectedItem.id);
+      this.chats[index].messagesByDate = [];
+      this.setInLocalStorage();
     }
   },
   computed: {
@@ -722,6 +904,12 @@ export default {
     },
     computedFieldPlaceholder() {
       return this.selectedItem.sender + "'s Message...";
+    },
+    filteredContries() {
+      let filtered = this.countryCodes.filter(x =>
+        x.name.toLowerCase().includes(this.countryFilter)
+      );
+      return filtered;
     }
   },
   watch: {
@@ -743,9 +931,9 @@ export default {
           "/" +
           dd +
           " at " +
-          today.getHours() +
+          ("0" + today.getHours()).slice(-2) +
           ":" +
-          today.getMinutes();
+          ("0" + today.getMinutes()).slice(-2);
         // this.selectedItem = {};
       }
       this.setInLocalStorage();
@@ -765,6 +953,12 @@ export default {
 <style lang="scss">
 .v-menu__content {
   box-shadow: rgba(81, 81, 81, 0.15) 1.95px 1.95px 2.6px !important;
-  border-radius: 8px !important;
+  border-radius: 10px !important;
+  .v-list-item {
+    height: 30px !important;
+  }
+  .v-list-item__icon {
+    margin: 12px 0 !important;
+  }
 }
 </style>
