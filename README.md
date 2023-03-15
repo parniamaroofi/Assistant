@@ -1,4 +1,4 @@
-# note
+# note-chat
 
 > My fantabulous Nuxt.js project
 

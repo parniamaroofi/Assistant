@@ -11,9 +11,12 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title>
-              <span class="fs-medium">Parnia Maroofi</span>
+              <span class="fs-large">Parnia Maroofi</span>
             </v-list-item-title>
-            <v-list-item-subtitle class="fs-xsmall"
+            <v-list-item-subtitle class="fs-xxsmall mt-2"
+              >+98 922 690 7483</v-list-item-subtitle
+            >
+            <v-list-item-subtitle class="fs-xxsmall"
               >parniamaroofi@gmail.com</v-list-item-subtitle
             >
           </v-list-item-content>

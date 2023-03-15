@@ -1,6 +1,13 @@
+@font-face {
+  font-family: iransans;
+  src: url("~assets/fonts/IRANSans(FaNum).ttf");
+}
 * {
-  font-family: "Poppins", sans-serif;
+  font-family: "Poppins", "iransans";
   letter-spacing: 0 !important;
+  &::placeholder{
+    font-size: 0.8rem !important;
+  }
 }
 html {
   &::-webkit-scrollbar {
@@ -27,11 +34,14 @@ input {
     fieldset {
       border: 0px !important;
     }
+    
   }
   .v-input__slot,
   fieldset {
     border-radius: 8px !important;
+    font-size: 0.8rem !important;
   }
+  
   .v-label {
     font-size: 0.9rem !important;
     padding-right: 15px;
@@ -224,12 +234,12 @@ input {
         transition: 0.2s all;
 
         &.active {
-          height: 270px;
+          height: 240px;
         }
         .dialCodes-list {
           padding-right: 5px;
-          max-height: 200px;
-          height: 200px;
+          max-height: 170px;
+          height: 170px;
           overflow-y: auto;
 
           &::-webkit-scrollbar {
@@ -380,7 +390,7 @@ input {
             border-radius: 12px 12px 12px 0;
           }
           .own-message {
-            color: #272727;
+            color: #5a5a5a;
             background-color: #fff;
             border-radius: 12px 12px 0 12px;
           }
@@ -393,7 +403,7 @@ input {
         }
       }
 
-      .noChat-chip {
+      .noContent-chip {
         color: #fff;
         font-size: 0.8rem;
         background-color: rgba($color: #000, $alpha: 0.2);
