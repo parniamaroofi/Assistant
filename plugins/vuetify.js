@@ -27,63 +27,64 @@ export default new Vuetify({
   rtl: false,
   theme: {
     options: {
-      customProperties: true
+      customProperties: true,
     },
     themes: {
       light: {
         primary: "#00acc1",
-        secondary: "#00838f"
-      }
-    }
+        secondary: "#00838f",
+        mainBlack: "#616161",
+      },
+    },
   },
   icons: {
     iconfont: "mdi",
     values: {
       Home: {
-        component: Home
+        component: Home,
       },
       Note: {
-        component: Note
+        component: Note,
       },
       Chat: {
-        component: Chat
+        component: Chat,
       },
       Bookmark: {
-        component: Bookmark
+        component: Bookmark,
       },
       SquareCheck: {
-        component: SquareCheck
+        component: SquareCheck,
       },
       Pen: {
-        component: Pen
+        component: Pen,
       },
       User: {
-        component: User
+        component: User,
       },
       Trash: {
-        component: Trash
+        component: Trash,
       },
       FilledStar: {
-        component: FilledStar
+        component: FilledStar,
       },
       OutlinedStar: {
-        component: OutlinedStar
+        component: OutlinedStar,
       },
       Text: {
-        component: Text
+        component: Text,
       },
       Search: {
-        component: Search
+        component: Search,
       },
       Close: {
-        component: Close
+        component: Close,
       },
       ArrowRight: {
-        component: ArrowRight
+        component: ArrowRight,
       },
       PenNoLine: {
-        component: PenNoLine
-      }
-    }
-  }
+        component: PenNoLine,
+      },
+    },
+  },
 });
