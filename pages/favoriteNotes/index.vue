@@ -85,18 +85,19 @@ export default {
   data() {
     return {
       notes: [],
-      favorites: []
+      favorites: [],
     };
   },
   methods: {
     // the function to remove a note from favorites
     removeNoteFromFavorites(note) {
       let index = this.favoritesIds.indexOf(note.id);
+      alert(index);
       this.favorites.splice(index, 1);
       this.favoritesIds.splice(index, 1);
       localStorage.setItem("favorites", JSON.stringify(this.favorites));
       localStorage.setItem("favoritesIds", JSON.stringify(this.favoritesIds));
-    }
+    },
   },
   mounted() {
     // Get favorites list
@@ -105,9 +106,9 @@ export default {
       : [];
     // Get favorite notes Ids list
     this.favoritesIds = localStorage.getItem("favoritesIds")
-      ? JSON.parse(localStorage.getItem("favoritesIds"))
+      ? JSON.parse(localStorage.getItem("favoritesIds")).reverse()
       : [];
-  }
+  },
 };
 </script>
 

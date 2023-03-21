@@ -101,7 +101,7 @@ export default {
     return {
       notes: [],
       favorites: [],
-      favoritesIds: []
+      favoritesIds: [],
     };
   },
   methods: {
@@ -129,7 +129,7 @@ export default {
         localStorage.setItem("favorites", JSON.stringify(this.favorites));
         localStorage.setItem("favoritesIds", JSON.stringify(this.favoritesIds));
       }
-    }
+    },
   },
   mounted() {
     // Get notes list
@@ -144,7 +144,7 @@ export default {
     this.favoritesIds = localStorage.getItem("favoritesIds")
       ? JSON.parse(localStorage.getItem("favoritesIds"))
       : [];
-  }
+  },
 };
 </script>
 

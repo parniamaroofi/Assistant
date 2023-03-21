@@ -75,7 +75,7 @@
                 <!-- preview of the last sent chat message -->
                 <p class="mb-0 fs-xsmall grey--text">
                   {{
-                    computedLastMessage(guideFriend).length > 2
+                    computedLastMessage(guideFriend).length > 22
                       ? `${computedLastMessage(guideFriend).slice(0, 22)}...`
                       : computedLastMessage(guideFriend)
                   }}

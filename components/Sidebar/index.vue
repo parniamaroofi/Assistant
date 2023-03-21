@@ -4,21 +4,18 @@
       <v-list color="cyan darken-3">
         <v-list-item>
           <v-list-item-avatar>
-            <img src="~assets/image/user.jpg" />
+            <img src="~assets/image/user-avatar.png" />
           </v-list-item-avatar>
         </v-list-item>
 
         <v-list-item>
-          <v-list-item-content>
+          <v-list-item-content class="pt-2 pb-1">
             <v-list-item-title>
-              <span class="fs-large">Parnia Maroofi</span>
+              <span class="fs-large">{{ username }}</span>
             </v-list-item-title>
-            <v-list-item-subtitle class="fs-xxsmall mt-2"
-              >+98 922 690 7483</v-list-item-subtitle
-            >
-            <v-list-item-subtitle class="fs-xxsmall"
-              >parniamaroofi@gmail.com</v-list-item-subtitle
-            >
+            <v-list-item-subtitle class="fs-xxsmall mt-1">{{
+              `${dialCode} ${mobile}`
+            }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -33,6 +30,13 @@
           <v-list-item-title class="fs-xsmall">{{
             item.title
           }}</v-list-item-title>
+        </v-list-item>
+        <v-divider class="mb-1"></v-divider>
+        <v-list-item @click="logout()">
+          <v-list-item-icon class="light-icon">
+            <v-icon class="mr-4">$Logout</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title class="fs-xsmall">Logout</v-list-item-title>
         </v-list-item>
       </v-list>
       <p
@@ -52,31 +56,43 @@ export default {
         {
           icon: "$Home",
           title: "Home",
-          to: "/"
+          to: "/home",
         },
         {
           icon: "$Note",
           title: "New Note",
-          to: "/newNote"
+          to: "/newNote",
         },
         {
           icon: "$Bookmark",
           title: "Saved Notes",
-          to: "/savedNotes"
+          to: "/savedNotes",
         },
         {
           icon: "$OutlinedStar",
           title: "Favorite Notes",
-          to: "/favoriteNotes"
+          to: "/favoriteNotes",
         },
         {
           icon: "$Chat",
           title: "Chat Rooms",
-          to: "/chat"
-        }
-      ]
+          to: "/chat",
+        },
+      ],
+
+      username: localStorage.getItem("username"),
+      dialCode: localStorage.getItem("dialCode"),
+      mobile: localStorage.getItem("mobile"),
     };
-  }
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem("username");
+      localStorage.removeItem("dialCode");
+      localStorage.removeItem("mobile");
+      this.$router.push("/");
+    },
+  },
 };
 </script>
 

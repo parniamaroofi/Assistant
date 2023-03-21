@@ -10,6 +10,7 @@ import Bookmark from "./../components/icons/Bookmark.vue";
 import SquareCheck from "./../components/icons/SquareCheck.vue";
 import Pen from "./../components/icons/Pen.vue";
 import User from "./../components/icons/User.vue";
+import Key from "./../components/icons/Key.vue";
 import Trash from "./../components/icons/Trash.vue";
 import FilledStar from "./../components/icons/FilledStar.vue";
 import OutlinedStar from "./../components/icons/OutlinedStar.vue";
@@ -18,6 +19,8 @@ import Search from "./../components/icons/Search.vue";
 import Close from "./../components/icons/Close.vue";
 import ArrowRight from "./../components/icons/ArrowRight.vue";
 import PenNoLine from "./../components/icons/PenNoLine.vue";
+import Phone from "./../components/icons/Phone.vue";
+import Logout from "./../components/icons/Logout.vue";
 
 Vue.use(Vuetify);
 
@@ -61,6 +64,9 @@ export default new Vuetify({
       User: {
         component: User,
       },
+      Key: {
+        component: Key,
+      },
       Trash: {
         component: Trash,
       },
@@ -84,6 +90,12 @@ export default new Vuetify({
       },
       PenNoLine: {
         component: PenNoLine,
+      },
+      Phone: {
+        component: Phone,
+      },
+      Logout: {
+        component: Logout,
       },
     },
   },

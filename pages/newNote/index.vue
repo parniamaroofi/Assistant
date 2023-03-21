@@ -13,7 +13,7 @@
           outlined
           label="*Name"
           placeholder="Name"
-          style="width:350px;"
+          style="width: 350px"
         ></v-text-field>
         <!-- Note subject field -->
         <v-text-field
@@ -21,7 +21,7 @@
           outlined
           label="Subject"
           placeholder="Subject (Optional)"
-          style="width:350px;"
+          style="width: 350px"
         ></v-text-field>
         <!-- Note text wysivyg -->
         <!-- <v-textarea
@@ -38,7 +38,7 @@
         <div class="save-button mt-6">
           <v-btn
             height="45"
-            style="width:100%"
+            style="width: 100%"
             color="primary"
             @click="CheckData()"
           >
@@ -73,13 +73,13 @@ export default {
       newNote: {
         name: "",
         subject: "",
-        text: ""
+        text: "",
       },
       snackbar: false,
       notif: {
         color: "success",
         text: "",
-        icon: ""
+        icon: "",
       },
       editorConfig: {
         toolbar: [
@@ -92,10 +92,10 @@ export default {
             "Indent",
             "Blockquote",
             "SpecialChar",
-            "HorizontalRule"
-          ]
-        ]
-      }
+            "HorizontalRule",
+          ],
+        ],
+      },
     };
   },
   methods: {
@@ -118,7 +118,7 @@ export default {
         author: this.newNote.name,
         subject: this.newNote.subject,
         text: this.newNote.text,
-        time: new Date().toLocaleString()
+        time: new Date().toLocaleString(),
       });
       localStorage.setItem(
         "notes",
@@ -132,7 +132,7 @@ export default {
       this.notif = {
         color: "success",
         text: "Your note successfully saved.",
-        icon: "mdi-check-decagram"
+        icon: "mdi-check-decagram",
       };
       this.snackbar = true;
     },
@@ -141,11 +141,11 @@ export default {
       this.notif = {
         color: "error",
         text: "Oops! you must fill in the required fields.",
-        icon: "mdi-alert-decagram"
+        icon: "mdi-alert-decagram",
       };
       this.snackbar = true;
-    }
-  }
+    },
+  },
 };
 </script>
 

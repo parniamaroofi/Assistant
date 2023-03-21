@@ -1,8 +1,8 @@
 <template>
   <div class="v-application" data-app>
     <!-- <page-header /> -->
-    <Sidebar />
-    <nuxt class="main" />
+    <Sidebar v-if="$nuxt.$route.name != 'index'" />
+    <nuxt :class="$nuxt.$route.name != 'index' ? 'main' : 'login-main'" />
     <!-- <page-footer /> -->
   </div>
 </template>
@@ -15,8 +15,16 @@ export default {
   components: {
     // pageHeader,
     // pageFooter
-    Sidebar
-  }
+    Sidebar,
+  },
+  mounted() {
+    if (
+      this.$nuxt.$route.name != "index" &&
+      !localStorage.getItem("username")
+    ) {
+      this.$router.push("/");
+    }
+  },
 };
 </script>
 
@@ -28,5 +36,10 @@ export default {
   right: 0;
   top: 0;
   padding: 0 25px 0 15px;
+}
+
+.login-main {
+  height: 100vh;
+  width: 100vw;
 }
 </style>
