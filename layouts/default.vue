@@ -1,11 +1,8 @@
 <template>
-  <div class="v-application" data-app>
+  <div v-if="!loading" class="v-application" data-app>
     <!-- <page-header /> -->
     <Sidebar v-if="$nuxt.$route.name != 'index'" @setLoading="setLoading" />
-    <nuxt
-      v-if="!loading"
-      :class="$nuxt.$route.name != 'index' ? 'main' : 'login-main'"
-    />
+    <nuxt :class="$nuxt.$route.name != 'index' ? 'main' : 'login-main'" />
     <!-- <page-footer /> -->
   </div>
 </template>
@@ -31,7 +28,7 @@ export default {
 
       setTimeout(() => {
         this.loading = false;
-      }, 200);
+      }, 500);
     },
   },
   mounted() {

@@ -82,6 +82,9 @@ input {
 .fs-large {
   font-size: 1rem !important;
 }
+.fs-medium2 {
+  font-size: 0.9rem !important;
+}
 .fs-medium {
   font-size: 0.85rem !important;
 }
@@ -381,7 +384,7 @@ input {
           ) !important;
           position: sticky;
           top: 0;
-          z-index: 10;
+          z-index: 2;
 
           .border-left {
             border-left: 2px solid $primary;
@@ -515,7 +518,7 @@ input {
       .noContent-chip {
         color: #fff;
         font-size: 0.8rem;
-        background-color: rgba($color: #000, $alpha: 0.2);
+        background-color: rgba($color: #000, $alpha: 0.3);
         position: sticky;
         top: 10px;
         margin: 0 auto;

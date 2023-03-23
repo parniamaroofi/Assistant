@@ -569,7 +569,7 @@
             <div class="border-left">
               <p class="fs-small mb-0 mainBlack--text">Pinned Message</p>
               <p
-                class="fs-xsmall mb-0 grey--text"
+                class="fs-xsmall mb-0 grey--text text-left"
                 :dir="messageDirection(selectedChat.pinnedMessage.text)"
               >
                 {{
@@ -581,7 +581,11 @@
             </div>
 
             <!-- Pin close icon -->
-            <div @click="closePinnedMessage()" class="pointer">
+            <div
+              @click="closePinnedMessageConfirmation = true"
+              @click.stop="showMessage(selectedChat.pinnedMessage.id)"
+              class="pointer"
+            >
               <v-icon small>mdi-close</v-icon>
             </div>
           </div>
@@ -645,18 +649,14 @@
                         @contextmenu="
                           getClickedMessageData(item2, index, index2)
                         "
-                        :class="item2.sender == 'self' ? 'ml-auto' : ''"
+                        :class="item2.self ? 'ml-auto' : ''"
                       >
                         <!-- message text -->
                         <div @contextmenu="showMessageMenu">
                           <div
                             class="message-box"
                             :dir="messageDirection(item2.text)"
-                            :class="
-                              item2.sender == 'self'
-                                ? 'own-message'
-                                : 'user-message'
-                            "
+                            :class="item2.self ? 'own-message' : 'user-message'"
                             :style="
                               !computedMessageTime(item.messages, index2)
                                 ? 'margin-bottom: 15px'
@@ -670,7 +670,7 @@
                             >
                               <p class="message-sender mb-0 fs-small">
                                 {{
-                                  item2.repliedMessage.sender == "self"
+                                  item2.repliedMessage.self
                                     ? userName
                                     : selectedChat.user
                                 }}
@@ -694,9 +694,7 @@
                         <div
                           v-if="computedMessageTime(item.messages, index2)"
                           class="fs-xxsmall grey--text mt-1 mb-3"
-                          :class="
-                            item2.sender == 'self' ? ' text-right' : 'text-left'
-                          "
+                          :class="item2.self ? ' text-right' : 'text-left'"
                         >
                           {{ item2.time }}
                         </div>
@@ -717,11 +715,7 @@
               <v-icon class="reply-icon">mdi-reply</v-icon>
               <div class="ml-3">
                 <p class="fs-small mainBlack--text mb-0">
-                  {{
-                    repliedMessage.sender == "self"
-                      ? userName
-                      : selectedChat.user
-                  }}
+                  {{ repliedMessage.self ? userName : selectedChat.user }}
                 </p>
                 <p
                   class="fs-xsmall grey--text mb-0"
@@ -787,13 +781,10 @@
           offset-y
           transition="scale-transition"
         >
-          <v-card min-width="170">
+          <v-card v-if="selectedChat.id != '1'" min-width="170">
             <v-list>
               <!-- REPLY item -->
-              <v-list-item
-                @click="replyMessage()"
-                v-if="selectedChat.id != '1'"
-              >
+              <v-list-item @click="replyMessage()">
                 <v-list-item-icon>
                   <v-icon>mdi-reply-outline</v-icon>
                 </v-list-item-icon>
@@ -803,7 +794,10 @@
               </v-list-item>
 
               <!-- COPY item -->
-              <v-list-item>
+              <v-list-item
+                v-clipboard:copy="selectedMessage.text"
+                @click="doCopy()"
+              >
                 <v-list-item-icon>
                   <v-icon>$Copy</v-icon>
                 </v-list-item-icon>
@@ -813,10 +807,7 @@
               </v-list-item>
 
               <!-- PIN item -->
-              <v-list-item
-                v-if="selectedChat.id != '1'"
-                @click="togglePinMessage()"
-              >
+              <v-list-item @click="togglePinMessage()">
                 <v-list-item-icon>
                   <v-icon>{{
                     selectedChat.id
@@ -838,10 +829,7 @@
               </v-list-item>
 
               <!-- DELETE MESSAGE item -->
-              <v-list-item
-                v-if="selectedChat.id != '1'"
-                @click="deleteMessageConfirmation = true"
-              >
+              <v-list-item @click="deleteMessageConfirmation = true">
                 <v-list-item-icon>
                   <v-icon>mdi-delete-outline</v-icon>
                 </v-list-item-icon>
@@ -886,6 +874,40 @@
           </v-card>
         </v-dialog>
         <!-- End of delete chat dialog -->
+
+        <!-- Dialog to get confirm to close pinned message  -->
+        <v-dialog v-model="closePinnedMessageConfirmation" width="350">
+          <v-card class="dialog-card">
+            <v-card-title class="pb-2">
+              <div>
+                <span class="fs-xlarge pt-1">Unpin message</span>
+              </div>
+            </v-card-title>
+
+            <v-card-text>
+              <div v-if="closePinnedMessageConfirmation">
+                <span class="fs-medium"
+                  >Are you sure you want to unpin this message?</span
+                >
+
+                <!-- UNPIN MESSAGE dialog operation button -->
+                <div class="mt-5 text-right">
+                  <v-btn
+                    @click="closePinnedMessageConfirmation = false"
+                    class="secondary--text"
+                    text
+                    >Cancel</v-btn
+                  >
+
+                  <v-btn @click="closePinnedMessage()" class="error--text" text
+                    >Unpin</v-btn
+                  >
+                </div>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+        <!-- End of close pinned message dialog -->
       </div>
     </div>
   </div>
@@ -966,6 +988,7 @@ export default {
       deleteChatConfirmation: false,
       clearHistoryConfirmation: false,
       deleteMessageConfirmation: false,
+      closePinnedMessageConfirmation: false,
     };
   },
   methods: {
@@ -1081,49 +1104,35 @@ export default {
     },
     // This function is called to send message is from US
     sendMessage() {
+      let message = {
+        id: uuidv4(),
+        self: true,
+        text: this.messageText,
+        time: this.currentTime(),
+        repliedMessage: this.hasReply ? this.repliedMessage : {},
+      };
+
       if (this.selectedChat.messagesByDate.length) {
         // Checks if there are any messages or not
         let lastIndex = this.selectedChat.messagesByDate.length - 1; // Index of the last object in messagesByDate
 
         if (
-          this.todayDate() == this.selectedChat.messagesByDate[lastIndex].date // Checks today's date with the date of the last message
+          this.todayDate() == this.selectedChat.messagesByDate[lastIndex].date // Checks today's date and the date of the last message
         ) {
-          // In case of equality the new message object will be pushed in messages of the last object of messagesByDate
-          this.selectedChat.messagesByDate[lastIndex].messages.push({
-            id: uuidv4(),
-            sender: "self",
-            text: this.messageText,
-            time: this.currentTime(),
-            repliedMessage: this.hasReply ? this.repliedMessage : {},
-          });
+          // In case of equality, the new message object will be pushed in messages of the last object of messagesByDate
+          this.selectedChat.messagesByDate[lastIndex].messages.push(message);
         } else {
           // If not equal, a new object will be created with today's date and the new message object will be pushed in its messages.
           this.selectedChat.messagesByDate.push({
             date: this.todayDate(),
-            messages: [
-              {
-                id: uuidv4(),
-                sender: "self",
-                text: this.messageText,
-                time: this.currentTime(),
-                repliedMessage: this.hasReply ? this.repliedMessage : {},
-              },
-            ],
+            messages: [message],
           });
         }
       } else {
         // If no message already exists, a new object will be created with today's date and the new message object will be pushed in its messages.
         this.selectedChat.messagesByDate.push({
           date: this.todayDate(),
-          messages: [
-            {
-              id: uuidv4(),
-              sender: "self",
-              text: this.messageText,
-              time: this.currentTime(),
-              repliedMessage: this.hasReply ? this.repliedMessage : {},
-            },
-          ],
+          messages: [message],
         });
       }
 
@@ -1135,14 +1144,22 @@ export default {
       }, 10);
       setTimeout(() => {
         this.updateActivityBySelf();
-      }, 100);
-      setTimeout(() => {
         this.setInLocalStorage();
-      }, 150);
+      }, 100);
     },
     // This function is called to send message is from USER
     sendUserMessage() {
       let index = this.chats.findIndex((x) => x.id == this.selectedItem.id); // Find index of user's chat object in chats list
+      let message = {
+        id: uuidv4(),
+        self: false,
+        text: this.userMessageText,
+        time: this.currentTime(),
+        repliedMessage:
+          this.selectedChat.id == this.selectedItem.id && this.hasReply
+            ? this.repliedMessage
+            : {},
+      };
 
       if (this.chats[index].messagesByDate.length) {
         let lastIndex = this.chats[index].messagesByDate.length - 1;
@@ -1150,57 +1167,27 @@ export default {
         if (
           this.todayDate() == this.chats[index].messagesByDate[lastIndex].date
         ) {
-          this.chats[index].messagesByDate[lastIndex].messages.push({
-            id: uuidv4(),
-            sender: "user",
-            text: this.userMessageText,
-            time: this.currentTime(),
-            repliedMessage:
-              this.selectedChat.id == this.selectedItem.id && this.hasReply
-                ? this.repliedMessage
-                : {},
-          });
+          this.chats[index].messagesByDate[lastIndex].messages.push(message);
         } else {
           this.chats[index].messagesByDate.push({
             date: this.todayDate(),
-            messages: [
-              {
-                id: uuidv4(),
-                sender: "user",
-                text: this.userMessageText,
-                time: this.currentTime(),
-                repliedMessage:
-                  this.selectedChat.id == this.selectedItem.id && this.hasReply
-                    ? this.repliedMessage
-                    : {},
-              },
-            ],
+            messages: [message],
           });
         }
       } else {
         this.chats[index].messagesByDate.push({
           date: this.todayDate(),
-          messages: [
-            {
-              id: uuidv4(),
-              sender: "user",
-              text: this.userMessageText,
-              time: this.currentTime(),
-              repliedMessage:
-                this.selectedChat.id == this.selectedItem.id && this.hasReply
-                  ? this.repliedMessage
-                  : {},
-            },
-          ],
+          messages: [message],
         });
       }
 
       this.userMessageText = "";
+      this.increaseUnseenMessages();
+
       if (this.selectedChat.id == this.selectedItem.id) {
         this.repliedMessage = {};
         this.hasReply = false;
       }
-      this.increaseUnseenMessages();
       if (this.selectedChat.id == this.selectedItem.id) {
         setTimeout(() => {
           this.scrollToEnd();
@@ -1230,7 +1217,7 @@ export default {
           (chat.messagesByDate[chat.messagesByDate.length - 1].messages[
             chat.messagesByDate[chat.messagesByDate.length - 1].messages
               .length - 1
-          ].sender == "self"
+          ].self
             ? "You: "
             : "") +
           chat.messagesByDate[chat.messagesByDate.length - 1].messages[
@@ -1301,6 +1288,7 @@ export default {
     closePinnedMessage() {
       let index = this.chats.findIndex((x) => x.id == this.selectedChat.id);
       this.chats[index].pinnedMessage = {};
+      this.closePinnedMessageConfirmation = false;
       this.setInLocalStorage();
     },
     // This function is called to reply a message
@@ -1416,6 +1404,8 @@ export default {
       }
       this.setInLocalStorage();
     },
+
+    doCopy() {},
   },
   computed: {
     // Filter and sort chats list
@@ -1504,7 +1494,7 @@ export default {
           date: this.todayDate(),
           messages: [
             {
-              sender: "user",
+              self: false,
               text: this.guideText,
               time: "Guide friend says",
               repliedMessage: {},

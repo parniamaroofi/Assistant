@@ -27,7 +27,7 @@
             class="dashboard-button"
             height="80"
             color="primary"
-            to="/chat"
+            to="/chats"
             ><v-icon class="mr-3">$Chat</v-icon>
             <span class="fs-xlarge">Chat room</span></v-btn
           >

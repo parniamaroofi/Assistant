@@ -11,32 +11,29 @@ export default {
       {
         hid: "description",
         name: "description",
-        content: process.env.npm_package_description || ""
-      }
+        content: process.env.npm_package_description || "",
+      },
     ],
     link: [
       { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
       {
         rel: "stylesheet",
-        href:
-          "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+        href: "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css",
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/icon?family=Material+Icons"
+        href: "https://fonts.googleapis.com/icon?family=Material+Icons",
       },
       {
-        href:
-          "https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap",
-        rel: "stylesheet"
-      }
+        href: "https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap",
+        rel: "stylesheet",
+      },
     ],
     script: [
       {
-        src:
-          "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
-      }
-    ]
+        src: "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js",
+      },
+    ],
   },
   /*
    ** Customize the progress-bar color
@@ -48,12 +45,12 @@ export default {
   css: [
     "@mdi/font/css/materialdesignicons.css",
     { src: "~assets/scss/style.scss" },
-    { src: "~assets/css/style.css" }
+    { src: "~assets/css/style.css" },
   ],
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ["~plugins/vuetify.js", "~plugins/ckeditor.js"],
+  plugins: ["~plugins/vuetify.js", "~plugins/packages.js"],
   /*
    ** Nuxt.js dev-modules
    */
@@ -64,7 +61,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     "@nuxtjs/axios",
-    "@nuxtjs/vuetify"
+    "@nuxtjs/vuetify",
   ],
   /*
    ** Axios module configuration
@@ -78,6 +75,6 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
-  }
+    extend(config, ctx) {},
+  },
 };

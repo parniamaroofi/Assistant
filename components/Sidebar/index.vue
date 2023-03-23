@@ -9,9 +9,9 @@
         </v-list-item>
 
         <v-list-item>
-          <v-list-item-content class="pt-2 pb-1">
+          <v-list-item-content class="pt-0 pb-1">
             <v-list-item-title>
-              <span class="fs-large">{{
+              <span class="fs-medium2">{{
                 username ? username : "No name"
               }}</span>
             </v-list-item-title>
