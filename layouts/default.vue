@@ -1,8 +1,11 @@
 <template>
   <div class="v-application" data-app>
     <!-- <page-header /> -->
-    <Sidebar v-if="$nuxt.$route.name != 'index'" />
-    <nuxt :class="$nuxt.$route.name != 'index' ? 'main' : 'login-main'" />
+    <Sidebar v-if="$nuxt.$route.name != 'index'" @setLoading="setLoading" />
+    <nuxt
+      v-if="!loading"
+      :class="$nuxt.$route.name != 'index' ? 'main' : 'login-main'"
+    />
     <!-- <page-footer /> -->
   </div>
 </template>
@@ -16,6 +19,20 @@ export default {
     // pageHeader,
     // pageFooter
     Sidebar,
+  },
+  data() {
+    return {
+      loading: false,
+    };
+  },
+  methods: {
+    setLoading() {
+      this.loading = true;
+
+      setTimeout(() => {
+        this.loading = false;
+      }, 200);
+    },
   },
   mounted() {
     if (
@@ -31,11 +48,11 @@ export default {
 <style lang="scss">
 .main {
   min-height: 90vh;
-  width: calc(100vw - 280px);
+  width: calc(100vw - 235px);
   position: absolute;
   right: 0;
   top: 0;
-  padding: 0 25px 0 15px;
+  padding: 0 30px;
 }
 
 .login-main {

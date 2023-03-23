@@ -370,10 +370,28 @@ input {
           }
         }
 
+        .pin-box {
+          padding: 8px;
+          border-radius: 0 0 7px 7px;
+          background: rgb(243, 248, 248) !important;
+          background: linear-gradient(
+            145deg,
+            rgb(219, 231, 242) 0%,
+            rgb(191, 225, 234) 100%
+          ) !important;
+          position: sticky;
+          top: 0;
+          z-index: 10;
+
+          .border-left {
+            border-left: 2px solid $primary;
+            padding-left: 7px;
+          }
+        }
+
         &-content {
           height: 66.5vh;
           width: 100%;
-          padding: 0 10px;
           overflow-y: auto;
           overflow-x: hidden;
           scroll-behavior: smooth;
@@ -391,9 +409,13 @@ input {
           &.fullScreen {
             height: 76vh !important;
           }
-          &.hasReply {
-            height: calc(66.5vh - 58px) !important;
+          &.hasOneBox {
+            height: calc(66.5vh - 57px) !important;
           }
+          &.hasTwoBox {
+            height: calc(66.5vh - 115px) !important;
+          }
+
           .messages-by-date {
             position: relative;
             text-align: center;
@@ -403,6 +425,15 @@ input {
               background-color: rgba($color: #000000, $alpha: 0.3);
               position: sticky;
               top: 10px;
+              margin: 0 auto;
+            }
+
+            .date-chip-widthPin {
+              color: #fff;
+              font-size: 0.67rem;
+              background-color: rgba($color: #000000, $alpha: 0.3);
+              position: sticky;
+              top: 68px;
               margin: 0 auto;
             }
 
@@ -468,7 +499,12 @@ input {
           &-box {
             padding: 10px;
             border-radius: 7px 7px 0 0;
-            background-color: rgb(210, 223, 232);
+            background: rgb(243, 248, 248) !important;
+            background: linear-gradient(
+              145deg,
+              rgb(219, 231, 242) 0%,
+              rgb(191, 225, 234) 100%
+            ) !important;
           }
           &-icon {
             transform: scaleX(-1);

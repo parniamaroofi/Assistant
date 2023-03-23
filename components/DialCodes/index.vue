@@ -5,7 +5,7 @@
       <v-text-field
         dense
         rounded
-        filled
+        :filled="filled"
         placeholder="Search in country name..."
         hideDetails
         class="mb-2 no-border-field"
@@ -15,7 +15,7 @@
         <!-- SEARCH icon -->
         <template v-slot:prepend-inner>
           <div>
-            <v-icon class="mr-2">$Search</v-icon>
+            <v-icon class="mr-2" :class="!filled ? 'mt-2' : ''">$Search</v-icon>
           </div>
         </template>
         <!-- CLOSE icon -->
@@ -70,6 +70,7 @@ export default {
   components: {
     CountryFlag,
   },
+  props: ["filled"],
   mixins: [CountryCodes],
   data() {
     return {

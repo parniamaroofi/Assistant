@@ -23,7 +23,7 @@
       <v-row class="mx-6 mt-6">
         <v-col>
           <v-btn
-            style="width: 100%"
+            block
             class="dashboard-button"
             height="80"
             color="primary"
@@ -34,7 +34,7 @@
         </v-col>
         <v-col>
           <v-btn
-            style="width: 100%"
+            block
             class="dashboard-button"
             height="80"
             color="primary"

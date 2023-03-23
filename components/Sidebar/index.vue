@@ -11,11 +11,25 @@
         <v-list-item>
           <v-list-item-content class="pt-2 pb-1">
             <v-list-item-title>
-              <span class="fs-large">{{ username }}</span>
+              <span class="fs-large">{{
+                username ? username : "No name"
+              }}</span>
             </v-list-item-title>
-            <v-list-item-subtitle class="fs-xxsmall mt-1">{{
-              `${dialCode} ${mobile}`
-            }}</v-list-item-subtitle>
+            <v-list-item-subtitle class="fs-xxsmall mt-1">
+              <!-- Display when there is a correct phone number -->
+              <div v-if="!formattedPhoneNumber">
+                <!-- Alert icon -->
+                <v-icon color="#ffffffb2" small class="mr-1"
+                  >mdi-alert-circle-outline</v-icon
+                >
+
+                <span>Incorrect mobile number</span>
+              </div>
+              <!-- Display when there is not a correct phone number -->
+              <div v-else>
+                {{ formattedPhoneNumber }}
+              </div>
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -41,7 +55,7 @@
       </v-list>
       <p
         class="fs-xxsmall white--text"
-        style="position: absolute; bottom: 0; left: 22px"
+        style="position: absolute; bottom: 0; left: 16px"
       >
         Design & develop by Parnia Maroofi
       </p>
@@ -49,6 +63,7 @@
   </div>
 </template>
 <script>
+import parsePhoneNumber from "libphonenumber-js";
 export default {
   data() {
     return {
@@ -76,22 +91,31 @@ export default {
         {
           icon: "$Chat",
           title: "Chat Rooms",
-          to: "/chat",
+          to: "/chats",
         },
       ],
 
       username: localStorage.getItem("username"),
       dialCode: localStorage.getItem("dialCode"),
       mobile: localStorage.getItem("mobile"),
+      formattedPhoneNumber: "",
     };
   },
   methods: {
     logout() {
+      this.$emit("setLoading");
       localStorage.removeItem("username");
       localStorage.removeItem("dialCode");
       localStorage.removeItem("mobile");
       this.$router.push("/");
     },
+  },
+  mounted() {
+    if (this.dialCode && this.mobile) {
+      this.formattedPhoneNumber = parsePhoneNumber(
+        this.dialCode + this.mobile
+      ).formatInternational();
+    }
   },
 };
 </script>
@@ -102,10 +126,13 @@ export default {
   left: 0;
   top: 0;
   height: 100vh;
+  .v-navigation-drawer {
+    width: 235px !important;
+  }
 
   .v-avatar {
-    width: 65px !important;
-    height: 65px !important;
+    width: 60px !important;
+    height: 60px !important;
   }
 }
 </style>

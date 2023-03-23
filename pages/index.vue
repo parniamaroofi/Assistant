@@ -6,10 +6,10 @@
     <div class="box-content">
       <div>
         <p class="mainFont--text mb-0 fs-large">Welcome to</p>
-        <p class="fs-xxlarge primary--text font-weight-bold bold-text mb-6">
+        <p class="fs-xxlarge primary--text font-weight-bold bold-text mb-4">
           Assistant application
         </p>
-        <p class="grey--text text--darken-2 fs-medium mb-0">
+        <p class="grey--text text--darken-2 fs-medium mb-4">
           <span>Please sign in to continue</span>
           <!-- Info icon -->
           <span @click="openInfoDialog()" class="pointer">
@@ -91,7 +91,7 @@
               <v-card v-if="dialCodesMenu" class="pa-1" width="325">
                 <!-- dialCodes list: shows when click on dialCode box -->
                 <div class="dialCodes-box">
-                  <DialCodes @select="selectDialCode" />
+                  <DialCodes @select="selectDialCode" :filled="true" />
                 </div>
               </v-card>
             </v-menu>

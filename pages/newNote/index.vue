@@ -36,12 +36,7 @@
 
         <!-- The button to save the note -->
         <div class="save-button mt-6">
-          <v-btn
-            height="45"
-            style="width: 100%"
-            color="primary"
-            @click="CheckData()"
-          >
+          <v-btn height="45" block color="primary" @click="CheckData()">
             <v-icon class="mr-1" small>mdi-check-underline</v-icon>Save</v-btn
           >
         </div>

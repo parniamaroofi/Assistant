@@ -471,75 +471,10 @@
               class="dialCodes-box mt-5"
               :class="openDialCodes ? 'active' : ''"
             >
-              <div class="pa-3">
-                <!-- dialCode search field -->
-                <v-text-field
-                  dense
-                  rounded
-                  placeholder="Search in country name..."
-                  hideDetails
-                  class="mb-2 no-border-field"
-                  style="background-color: #fff"
-                  v-model="countryFilter"
-                >
-                  <!-- SEARCH icon -->
-                  <template v-slot:prepend-inner>
-                    <div>
-                      <v-icon small class="mr-2" style="margin-top: 11px"
-                        >$Search</v-icon
-                      >
-                    </div>
-                  </template>
-                  <!-- CLOSE icon -->
-                  <template v-slot:append>
-                    <div
-                      class="pointer"
-                      v-if="countryFilter"
-                      @click="countryFilter = ''"
-                    >
-                      <v-icon color="primary" small class="mt-3"
-                        >mdi-close</v-icon
-                      >
-                    </div>
-                  </template>
-                </v-text-field>
-
-                <div class="dialCodes-list">
-                  <!-- NO RESULT box when there is no filter result for country -->
-                  <div v-if="!filteredContries.length" class="text-center">
-                    <span class="fs-medium grey--text"
-                      >No result for "{{ countryFilter }}"</span
-                    >
-                  </div>
-
-                  <!-- dialCode item -->
-                  <div
-                    v-for="(item, index) in filteredContries"
-                    :key="index"
-                    class="list-item d-flex justify-space-between fs-medium pointer"
-                    @click="selectDialCode(item)"
-                  >
-                    <p class="mb-0">
-                      <!-- country flag -->
-                      <country-flag :country="item.code" size="small" />
-                      <!-- country name -->
-                      <span class="pl-1 fs-small">
-                        {{
-                          item.name.length > 28
-                            ? `${item.name.slice(0, 28)}...`
-                            : item.name
-                        }}
-                      </span>
-                    </p>
-                    <!-- country dialCode -->
-                    <p class="secondary--text mb-0 fs-small">
-                      {{ item.dial_code }}
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <DialCodes @select="selectDialCode" :filled="false" />
             </div>
           </v-card>
+
           <!-- submit and create new chat button -->
           <div>
             <v-btn
@@ -625,11 +560,41 @@
 
           <v-divider></v-divider>
 
+          <!-- The box that display pinned message -->
+          <div
+            class="pin-box d-flex justify-space-between pointer"
+            v-if="selectedChat.pinnedMessage.id"
+            @click="showMessage(selectedChat.pinnedMessage.id)"
+          >
+            <div class="border-left">
+              <p class="fs-small mb-0 mainBlack--text">Pinned Message</p>
+              <p
+                class="fs-xsmall mb-0 grey--text"
+                :dir="messageDirection(selectedChat.pinnedMessage.text)"
+              >
+                {{
+                  selectedChat.pinnedMessage.text.length > 30
+                    ? `${selectedChat.pinnedMessage.text.slice(0, 30)}...`
+                    : selectedChat.pinnedMessage.text
+                }}
+              </p>
+            </div>
+
+            <!-- Pin close icon -->
+            <div @click="closePinnedMessage()" class="pointer">
+              <v-icon small>mdi-close</v-icon>
+            </div>
+          </div>
+
           <div
             class="chat-content"
             :class="{
-              fullScreen: selectedChat.id == '1',
-              hasReply: hasReply,
+              fullScreen: selectedChat.id == '1', // box height when Guide friend chat is open
+              // box height when there is just one opened box (reply or pin)
+              hasOneBox:
+                (hasReply && !selectedChat.pinnedMessage.id) ||
+                (!hasReply && selectedChat.pinnedMessage.id),
+              hasTwoBox: hasReply && selectedChat.pinnedMessage.id, // box height when both of boxes is opened
             }"
           >
             <!-- NO CONTENT box when there is no messages for a chat -->
@@ -758,7 +723,10 @@
                       : selectedChat.user
                   }}
                 </p>
-                <p class="fs-xsmall grey--text mb-0">
+                <p
+                  class="fs-xsmall grey--text mb-0"
+                  :dir="messageDirection(repliedMessage.text)"
+                >
                   {{
                     repliedMessage.text.length > 30
                       ? `${repliedMessage.text.slice(0, 30)}...`
@@ -819,37 +787,70 @@
           offset-y
           transition="scale-transition"
         >
-          <v-list>
-            <!-- REPLY item -->
-            <v-list-item @click="replyMessage()" v-if="selectedChat.id != '1'">
-              <v-list-item-icon>
-                <v-icon>mdi-reply-outline</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title class="fs-small pl-2 mainBlack--text"
-                >Reply
-              </v-list-item-title>
-            </v-list-item>
+          <v-card min-width="170">
+            <v-list>
+              <!-- REPLY item -->
+              <v-list-item
+                @click="replyMessage()"
+                v-if="selectedChat.id != '1'"
+              >
+                <v-list-item-icon>
+                  <v-icon>mdi-reply-outline</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title class="fs-small pl-2 mainBlack--text"
+                  >Reply
+                </v-list-item-title>
+              </v-list-item>
 
-            <!-- PIN item -->
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-pin-outline</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title class="fs-small pl-2 mainBlack--text"
-                >Pin message
-              </v-list-item-title>
-            </v-list-item>
+              <!-- COPY item -->
+              <v-list-item>
+                <v-list-item-icon>
+                  <v-icon>$Copy</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title class="fs-small pl-2 mainBlack--text"
+                  >Copy
+                </v-list-item-title>
+              </v-list-item>
 
-            <!-- DELETE MESSAGE item -->
-            <v-list-item @click="deleteMessageConfirmation = true">
-              <v-list-item-icon>
-                <v-icon>mdi-delete-outline</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title class="fs-small pl-2 mainBlack--text"
-                >Delete Message
-              </v-list-item-title>
-            </v-list-item>
-          </v-list>
+              <!-- PIN item -->
+              <v-list-item
+                v-if="selectedChat.id != '1'"
+                @click="togglePinMessage()"
+              >
+                <v-list-item-icon>
+                  <v-icon>{{
+                    selectedChat.id
+                      ? selectedChat.pinnedMessage.id != selectedMessage.id
+                        ? "mdi-pin-outline"
+                        : "mdi-pin-off-outline"
+                      : "mdi-pin-outline"
+                  }}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title class="fs-small pl-2 mainBlack--text"
+                  >{{
+                    selectedChat.id
+                      ? selectedChat.pinnedMessage.id != selectedMessage.id
+                        ? "Pin message"
+                        : "Unpin message"
+                      : "Pin message"
+                  }}
+                </v-list-item-title>
+              </v-list-item>
+
+              <!-- DELETE MESSAGE item -->
+              <v-list-item
+                v-if="selectedChat.id != '1'"
+                @click="deleteMessageConfirmation = true"
+              >
+                <v-list-item-icon>
+                  <v-icon>mdi-delete-outline</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title class="fs-small pl-2 mainBlack--text"
+                  >Delete Message
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-card>
         </v-menu>
 
         <!-- Dialog to get confirm to delete a chat  -->
@@ -891,13 +892,15 @@
 </template>
 
 <script>
-import { v4 as uuidv4 } from "uuid"; // id generator package for chats
+import { v4 as uuidv4 } from "uuid"; // id generator package
 import Avatar from "vue-avatar";
 import CountryFlag from "vue-country-flag";
 import CountryCodes from "./../../mixin/CountryCodes.vue";
+import DialCodes from "./../../components/DialCodes";
 export default {
   components: {
     Avatar,
+    DialCodes,
     CountryFlag,
   },
   mixins: [CountryCodes],
@@ -912,7 +915,7 @@ export default {
       userMessageText: "",
       repliedMessageId: "",
       repliedMessageStyle: "",
-      userName: "Parnia Maroofi",
+      userName: localStorage.getItem("username"),
       guideText:
         "Hey there! I'm your guide friend who is going to help you use this online chat demo!<br />This application aims to implement a completely front-end project, and in this section, tries to provide almost complete functionality of a chat.<br /><br />The features available in the chat are as follows:<br /> <li>Create new chat: You can add a new chat to your chat list with the desired name and phone number.</li> <li> Open one chat and send new message: You can open one chat by click on it in the list, send new message and see all sent messages.</li> <li> Handle a chat by the chat options menu: You can access the options menu of a chat by right-clicking on the desired chat and use the implemented features.</li> <li> Handle a message by the message options menu: Also you can access the options menu of a message by right-clicking on the desired message and use the features implemented for it.</li><br /> Note that all data will be saved and if you use the application with the same IP address, you can see all the data you entered in the chat again. <br />Hope you enjoy ♥",
 
@@ -1017,12 +1020,7 @@ export default {
       this.messageInterval = setInterval(() => {
         this.repliedMessageStyle =
           "background-color: transparent;transition: .3s linear;";
-      }, 3000);
-
-      // setTimeout(() => {
-      //   this.repliedMessageStyle =
-      //     "background-color: transparent;transition: .3s linear;";
-      // }, 3000);
+      }, 2000);
     },
     // This function is called to set and update chats data in localStorage
     setInLocalStorage() {
@@ -1289,6 +1287,22 @@ export default {
       }
       this.setInLocalStorage();
     },
+    // This function is called to pin or unpin a message
+    togglePinMessage() {
+      if (this.selectedChat.pinnedMessage.id != this.selectedMessage.id) {
+        let index = this.chats.findIndex((x) => x.id == this.selectedChat.id);
+        this.chats[index].pinnedMessage = this.selectedMessage;
+        this.setInLocalStorage();
+      } else {
+        this.closePinnedMessage();
+      }
+    },
+    // This function is called to close the pinned message
+    closePinnedMessage() {
+      let index = this.chats.findIndex((x) => x.id == this.selectedChat.id);
+      this.chats[index].pinnedMessage = {};
+      this.setInLocalStorage();
+    },
     // This function is called to reply a message
     replyMessage() {
       this.hasReply = true;
@@ -1345,6 +1359,7 @@ export default {
         lastAcivity: 0,
         pinTimestamp: 0,
         messagesByDate: [],
+        pinnedMessage: {},
       });
       this.setInLocalStorage();
       this.openNew = false;
@@ -1376,6 +1391,8 @@ export default {
       this.clearHistoryConfirmation = false;
       let index = this.chats.findIndex((x) => x.id == this.selectedItem.id);
       this.chats[index].messagesByDate = [];
+      this.chats[index].pinnedMessage = {};
+      this.chats[index].unseenNumber = 0;
       this.repliedMessage = {};
       this.hasReply = false;
       this.setInLocalStorage();
@@ -1384,6 +1401,10 @@ export default {
     deleteMessage() {
       this.deleteMessageConfirmation = false;
       let index = this.chats.findIndex((x) => x.id == this.selectedChat.id);
+
+      if (this.selectedMessage.id == this.selectedChat.pinnedMessage.id) {
+        this.chats[index].pinnedMessage = {};
+      }
 
       this.chats[index].messagesByDate[this.dayIndex].messages.splice(
         this.messageIndex,
@@ -1477,6 +1498,7 @@ export default {
       isOnline: false,
       lastSeen: "",
       lastAcivity: 0,
+      pinnedMessage: {},
       messagesByDate: [
         {
           date: this.todayDate(),
