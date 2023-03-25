@@ -1,5 +1,8 @@
 export default {
   mode: "spa",
+  // server: {
+  //   host: "0.0.0.0",
+  // },
   /*
    ** Headers of the page
    */
@@ -23,10 +26,6 @@ export default {
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/icon?family=Material+Icons",
-      },
-      {
-        href: "https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap",
-        rel: "stylesheet",
       },
     ],
     script: [
