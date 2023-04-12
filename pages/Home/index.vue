@@ -9,7 +9,7 @@
           Welcome to <span class="primary--text">Assistant</span>.
         </h4>
 
-        <p class="mt-8 mr-10 fs-large">
+        <p class="mt-8 mr-10 fs-medium2 mainBlack--text">
           This is a test piece that helps designers and programmers to use these
           test letters to demonstrate their completed designs and designs to the
           employer, using this test text can speed up the progress of the
@@ -29,7 +29,7 @@
             color="primary"
             to="/chats"
             ><v-icon class="mr-3">$Chat</v-icon>
-            <span class="fs-xlarge">Chat room</span></v-btn
+            <span class="fs-xlarge">Chat rooms</span></v-btn
           >
         </v-col>
         <v-col>

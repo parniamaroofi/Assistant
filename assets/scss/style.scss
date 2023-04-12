@@ -677,6 +677,13 @@ input {
       transform: scale(1, 1);
     }
   }
+
+  .profile-edit-icon {
+    path {
+      stroke: #616161;
+    }
+    transform: translate(8px, 19px);
+  }
 }
 
 .login-page {
@@ -737,6 +744,11 @@ input {
     rgba(243, 248, 248, 1) 0%,
     rgba(211, 233, 227, 1) 100%
   ) !important;
+  .v-input__slot,
+  fieldset {
+    border-radius: 8px !important;
+    font-size: 0.8rem !important;
+  }
 }
 
 // Number type inputs spin buttons

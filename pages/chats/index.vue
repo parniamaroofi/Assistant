@@ -1,7 +1,7 @@
 <template>
   <div class="chats" v-if="pageLoaded">
     <!-- main div -->
-    <div class="chat-card" @keyup.esc="selectedChat = {}" tabindex="0">
+    <div class="chat-card" @keyup.esc="closeChat()" tabindex="0">
       <!-- chat box LEFT SECTION -->
       <div class="chats-list">
         <!-- search field for chats -->
@@ -207,12 +207,7 @@
                 </v-list-item>
 
                 <!-- SEND MESSAGE FROM USER item -->
-                <v-list-item
-                  @click="
-                    userChatDialog = true;
-                    userMessageText = '';
-                  "
-                >
+                <v-list-item @click="openUserChat()">
                   <v-list-item-icon>
                     <v-icon style="transform: translateY(2px)"
                       >mdi-message-arrow-left-outline</v-icon
@@ -244,7 +239,7 @@
             </v-card-title>
 
             <v-card-text>
-              <div v-if="deleteChatConfirmation">
+              <div>
                 <span class="fs-medium"
                   >Are you sure you want to delete chat with
                   <b>{{ selectedItem.user }}</b
@@ -285,7 +280,7 @@
             </v-card-title>
 
             <v-card-text>
-              <div v-if="clearHistoryConfirmation">
+              <div>
                 <span class="fs-medium"
                   >Are you sure you want to clear chat history with
                   <b>{{ selectedItem.user }}</b
@@ -347,13 +342,14 @@
 
                 <div class="mt-6">
                   <v-text-field
-                    class="no-border-field mb-2"
+                    class="no-border-field mb-3"
                     rounded
                     style="background-color: #fff"
                     :placeholder="computedFieldPlaceholder"
                     outlined
                     hide-details
                     dense
+                    id="user-field"
                     v-model.trim="userMessageText"
                     @input="changeUserTypingStatus()"
                     @keyup.enter="userMessageText ? sendUserMessage() : ''"
@@ -498,8 +494,74 @@
         <!-- chat LOADER -->
         <v-skeleton-loader v-if="chatLoading" type="image"></v-skeleton-loader>
 
+        <!-- user profile dialog -->
+        <div
+          class="userProfileDialog"
+          :class="userProfileDialog ? 'active' : ''"
+        >
+          <div class="pa-6">
+            <!-- dialog CLOSE icon -->
+            <div class="text-right">
+              <span @click="userProfileDialog = false">
+                <v-icon class="pointer">$Close</v-icon>
+              </span>
+            </div>
+
+            <!-- dialog content -->
+            <div v-if="userProfileDialog">
+              <!-- user profile avatar -->
+              <div class="d-flex">
+                <avatar
+                  :username="selectedChat.user"
+                  :size="59"
+                  rounded
+                  color="#fff"
+                  class="mb-3"
+                ></avatar>
+
+                <span class="fs-xlarge pl-3 pt-4">User Profile</span>
+                <span
+                  class="profile-edit-icon pointer"
+                  @click="openProfileEditDialog()"
+                  ><v-icon>$Note</v-icon></span
+                >
+              </div>
+
+              <div class="mt-3 mx-1 d-flex pa-3">
+                <!-- <div class="d-flex flex-column justify-start mr-2">
+                  <v-icon>mdi-information-outline</v-icon>
+                </div> -->
+                <span class="fs-small mainBlack--text"
+                  >In this section, you can see the information of a user and
+                  you can also edit the user's name through the editing icon
+                  above. Note that the user's mobile number
+                  <span class="text-decoration-underline"
+                    >cannot be edited!</span
+                  ></span
+                >
+              </div>
+
+              <div class="mt-8 ml-5">
+                <p class="mb-5 fs-medium blackFont--text">
+                  <v-icon class="mr-3">$User</v-icon> {{ selectedChat.user }}
+                </p>
+                <p class="fs-medium blackFont--text">
+                  <v-icon class="mr-3" style="transform: translateX(1px)"
+                    >$Phone</v-icon
+                  >
+                  {{ computedMobileNumber(selectedChat.mobile) }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="chat" v-if="selectedChat.user">
-          <div class="chat-header d-flex">
+          <div
+            @click="selectedChat.id != '1' ? openUserProfileDialog() : ''"
+            :class="selectedChat.id != '1' ? 'pointer' : ''"
+            class="chat-header d-flex"
+          >
             <!-- chat avatar -->
             <avatar
               :username="selectedChat.user"
@@ -558,7 +620,14 @@
             </div>
           </div>
 
-          <v-divider></v-divider>
+          <v-divider v-if="!pinLoading"></v-divider>
+
+          <v-progress-linear
+            indeterminate
+            color="primary"
+            height="1"
+            v-else
+          ></v-progress-linear>
 
           <!-- The box that display pinned message -->
           <div
@@ -600,6 +669,7 @@
                 (!hasReply && selectedChat.pinnedMessage.id),
               hasTwoBox: hasReply && selectedChat.pinnedMessage.id, // box height when both of boxes is opened
             }"
+            @scroll="computedDownButton()"
           >
             <!-- NO CONTENT box when there is no messages for a chat -->
             <div
@@ -675,7 +745,7 @@
                                     : selectedChat.user
                                 }}
                               </p>
-                              <p class="message-text mb-0 fs-xsmall">
+                              <p class="message-text mb-0">
                                 {{
                                   item2.repliedMessage.text.length > 30
                                     ? `${item2.repliedMessage.text.slice(
@@ -704,6 +774,15 @@
                 </v-row>
               </div>
             </div>
+            <!-- Go down button -->
+
+            <v-btn
+              v-if="showGoDownBtn"
+              @click="scrollToEnd"
+              class="goDownBtn"
+              color="secondary"
+              ><v-icon>mdi-chevron-down</v-icon></v-btn
+            >
           </div>
 
           <div
@@ -851,7 +930,7 @@
             </v-card-title>
 
             <v-card-text>
-              <div v-if="deleteMessageConfirmation">
+              <div>
                 <span class="fs-medium"
                   >Are you sure you want to delete this message?</span
                 >
@@ -885,7 +964,7 @@
             </v-card-title>
 
             <v-card-text>
-              <div v-if="closePinnedMessageConfirmation">
+              <div>
                 <span class="fs-medium"
                   >Are you sure you want to unpin this message?</span
                 >
@@ -908,6 +987,79 @@
           </v-card>
         </v-dialog>
         <!-- End of close pinned message dialog -->
+
+        <!-- Dialog for user profile edit -->
+        <v-dialog v-model="profileEditDialog" width="400">
+          <v-card class="dialog-card" v-if="profileEditDialog">
+            <v-card-title class="pb-2 pt-5">
+              <div class="d-flex">
+                <avatar :size="40" :username="editedName" color="#fff"></avatar>
+                <span class="fs-xlarge pl-3 pt-1">Edit Name</span>
+              </div>
+            </v-card-title>
+
+            <v-card-text>
+              <div>
+                <div class="mt-4">
+                  <v-text-field
+                    prepend-inner-icon="$User"
+                    v-model.trim="editedName"
+                    outlined
+                    hide-details
+                    placeholder="User's full name"
+                    @keyup.enter="
+                      editedName && !computedEditedNameCharacters
+                        ? EditName()
+                        : ''
+                    "
+                  >
+                  </v-text-field>
+                </div>
+
+                <div class="d-flex mt-2">
+                  <div class="d-flex flex-column justify-start mr-1">
+                    <v-icon
+                      class="fs-xlarge"
+                      style="margin-top: 2px"
+                      :color="
+                        computedEditedNameCharacters ? 'error' : 'grey darken-1'
+                      "
+                      >mdi-alert-circle-outline</v-icon
+                    >
+                  </div>
+                  <span
+                    class="fs-small"
+                    :class="
+                      computedEditedNameCharacters
+                        ? 'error--text'
+                        : 'mainBlack--text'
+                    "
+                  >
+                    The maximum number of characters is 20.
+                  </span>
+                </div>
+              </div>
+              <!-- EDIT PROFILE dialog operation button -->
+              <div class="mt-5 text-right">
+                <v-btn
+                  @click="profileEditDialog = false"
+                  class="secondary--text"
+                  text
+                  >Cancel</v-btn
+                >
+
+                <v-btn
+                  :disabled="computedEditedNameCharacters || !editedName"
+                  @click="EditName()"
+                  class="error--text"
+                  text
+                  >Edit name</v-btn
+                >
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+        <!-- End of user profile edit dialog -->
       </div>
     </div>
   </div>
@@ -919,6 +1071,7 @@ import Avatar from "vue-avatar";
 import CountryFlag from "vue-country-flag";
 import CountryCodes from "./../../mixin/CountryCodes.vue";
 import DialCodes from "./../../components/DialCodes";
+import parsePhoneNumber from "libphonenumber-js";
 export default {
   components: {
     Avatar,
@@ -931,6 +1084,7 @@ export default {
       // String
       filter: "",
       interval: "",
+      editedName: "",
       messageText: "",
       countryFilter: "",
       messageInterval: "",
@@ -980,11 +1134,15 @@ export default {
       openNew: false,
       listMenu: false,
       hasReply: false,
+      pinLoading: false,
       pageLoaded: false,
       chatLoading: false,
       messageMenu: false,
+      showGoDownBtn: false,
       openDialCodes: false,
       userChatDialog: false,
+      profileEditDialog: false,
+      userProfileDialog: false,
       deleteChatConfirmation: false,
       clearHistoryConfirmation: false,
       deleteMessageConfirmation: false,
@@ -992,6 +1150,25 @@ export default {
     };
   },
   methods: {
+    // This function is called to open user profile dialog
+    openUserProfileDialog() {
+      this.userProfileDialog = true;
+    },
+    // the funtion to recognize to show down button or not
+    computedDownButton() {
+      if (this.pageLoaded) {
+        var container = document.querySelector(".chat-content");
+        var scrollHeight = container.scrollHeight - 600;
+
+        if (container.scrollTop < scrollHeight) {
+          this.showGoDownBtn = true;
+        } else {
+          this.showGoDownBtn = false;
+        }
+      } else {
+        this.showGoDownBtn = false;
+      }
+    },
     // This function is called to change the display form of the date
     computedDate(date) {
       let year = date.split("/")[0]; // GET YEAR of the date
@@ -1037,7 +1214,7 @@ export default {
       });
 
       this.repliedMessageStyle =
-        "background-color: #00abc111; border-radius:6px; transition: .3s linear;";
+        "background-color: #cee4ee; border-radius:6px; transition: .3s linear;";
 
       clearInterval(this.messageInterval);
       this.messageInterval = setInterval(() => {
@@ -1276,13 +1453,19 @@ export default {
     },
     // This function is called to pin or unpin a message
     togglePinMessage() {
-      if (this.selectedChat.pinnedMessage.id != this.selectedMessage.id) {
-        let index = this.chats.findIndex((x) => x.id == this.selectedChat.id);
-        this.chats[index].pinnedMessage = this.selectedMessage;
-        this.setInLocalStorage();
-      } else {
-        this.closePinnedMessage();
-      }
+      this.pinLoading = true;
+
+      setTimeout(() => {
+        if (this.selectedChat.pinnedMessage.id != this.selectedMessage.id) {
+          let index = this.chats.findIndex((x) => x.id == this.selectedChat.id);
+          this.chats[index].pinnedMessage = this.selectedMessage;
+          this.setInLocalStorage();
+        } else {
+          this.closePinnedMessage();
+        }
+
+        this.pinLoading = false;
+      }, 1000);
     },
     // This function is called to close the pinned message
     closePinnedMessage() {
@@ -1404,6 +1587,37 @@ export default {
       }
       this.setInLocalStorage();
     },
+    // This function is called to open user chat dialog to write user message
+    openUserChat() {
+      this.userChatDialog = true;
+      this.userMessageText = "";
+      setTimeout(() => {
+        let field = document.getElementById("user-field");
+        field.focus();
+      }, 1000);
+    },
+    // This function is called to format the mobile number
+    computedMobileNumber(number) {
+      return parsePhoneNumber(number).formatInternational();
+    },
+    // This function is called to open profile edit dialog
+    openProfileEditDialog() {
+      this.editedName = this.selectedChat.user;
+      this.profileEditDialog = true;
+    },
+    // This function is called to edit user's name
+    EditName() {
+      let index = this.chats.findIndex((x) => x.id == this.selectedChat.id);
+      this.chats[index].user = this.editedName;
+      this.setInLocalStorage();
+      this.profileEditDialog = false;
+    },
+    // This function is called to close the opened chat
+    closeChat() {
+      this.profileEditDialog = false;
+      this.userProfileDialog = false;
+      this.selectedChat = {};
+    },
 
     doCopy() {},
   },
@@ -1447,6 +1661,11 @@ export default {
         } else return false;
       } else return false;
     },
+    computedEditedNameCharacters() {
+      if (this.editedName.length > 20) {
+        return true;
+      } else return false;
+    },
   },
   watch: {
     userChatDialog(val) {
@@ -1461,11 +1680,11 @@ export default {
         let yyyy = today.getFullYear();
         this.chats[index].isOnline = false;
         this.chats[index].lastSeen =
-          yyyy +
+          dd +
           "/" +
           mm +
           "/" +
-          dd +
+          yyyy +
           " at " +
           ("0" + today.getHours()).slice(-2) +
           ":" +

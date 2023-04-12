@@ -76,6 +76,21 @@ export default {
         text: "",
         icon: "",
       },
+
+      months: [
+        "Junuary",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ],
       editorConfig: {
         toolbar: [
           ["Bold", "Italic", "Strike"],
@@ -94,6 +109,24 @@ export default {
     };
   },
   methods: {
+    // This function is called to get today's date
+    todayDate() {
+      let today = new Date();
+      let dd = Number(String(today.getDate()).padStart(2, "0"));
+      let mm = this.months[String(today.getMonth() + 1).padStart(2, "0") - 1];
+      let yyyy = today.getFullYear();
+
+      return `${dd} ${mm} ${yyyy}`;
+    },
+    // This function is called to get current time
+    currentTime() {
+      let today = new Date();
+      let hour, minute;
+      hour = ("0" + today.getHours()).slice(-2);
+      minute = ("0" + today.getMinutes()).slice(-2);
+
+      return hour + ":" + minute;
+    },
     // the function to check required fields is filled or not
     CheckData() {
       if (!this.newNote.name || !this.newNote.text) {
@@ -113,7 +146,7 @@ export default {
         author: this.newNote.name,
         subject: this.newNote.subject,
         text: this.newNote.text,
-        time: new Date().toLocaleString(),
+        time: `${this.todayDate()} - ${this.currentTime()}`,
       });
       localStorage.setItem(
         "notes",
