@@ -684,6 +684,21 @@ input {
     }
     transform: translate(8px, 19px);
   }
+  textarea {
+    height: 2.6rem !important;
+    padding: 9px 5px !important;
+    margin-bottom: 8px !important;
+    line-height: 22px !important;
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #c0ccce;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: #eee;
+    }
+  }
 }
 
 .login-page {

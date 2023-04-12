@@ -132,8 +132,11 @@
                     <p v-else class="mb-0 fs-xsmall grey--text">
                       {{
                         computedLastMessage(chat).length > 22
-                          ? `${computedLastMessage(chat).slice(0, 22)}...`
-                          : computedLastMessage(chat)
+                          ? `${removeBrTags(computedLastMessage(chat)).slice(
+                              0,
+                              22
+                            )}...`
+                          : removeBrTags(computedLastMessage(chat))
                       }}
                     </p>
                   </div>
@@ -643,8 +646,11 @@
               >
                 {{
                   selectedChat.pinnedMessage.text.length > 30
-                    ? `${selectedChat.pinnedMessage.text.slice(0, 30)}...`
-                    : selectedChat.pinnedMessage.text
+                    ? `${removeBrTags(selectedChat.pinnedMessage.text).slice(
+                        0,
+                        30
+                      )}...`
+                    : removeBrTags(selectedChat.pinnedMessage.text)
                 }}
               </p>
             </div>
@@ -726,7 +732,12 @@
                           <div
                             class="message-box"
                             :dir="messageDirection(item2.text)"
-                            :class="item2.self ? 'own-message' : 'user-message'"
+                            :class="{
+                              'own-message': item2.self,
+                              'user-message': !item2.self,
+                              'text-right':
+                                messageDirection(item2.text) == 'rtl',
+                            }"
                             :style="
                               !computedMessageTime(item.messages, index2)
                                 ? 'margin-bottom: 15px'
@@ -735,7 +746,7 @@
                           >
                             <div
                               v-if="item2.repliedMessage.text"
-                              class="replied-message pointer"
+                              class="replied-message pointer text-left"
                               @click="showMessage(item2.repliedMessage.id)"
                             >
                               <p class="message-sender mb-0 fs-small">
@@ -745,14 +756,18 @@
                                     : selectedChat.user
                                 }}
                               </p>
-                              <p class="message-text mb-0">
+                              <p
+                                class="message-text mb-0"
+                                :dir="
+                                  messageDirection(item2.repliedMessage.text)
+                                "
+                              >
                                 {{
                                   item2.repliedMessage.text.length > 30
-                                    ? `${item2.repliedMessage.text.slice(
-                                        0,
-                                        30
-                                      )}...`
-                                    : item2.repliedMessage.text
+                                    ? `${removeBrTags(
+                                        item2.repliedMessage.text
+                                      ).slice(0, 30)}...`
+                                    : removeBrTags(item2.repliedMessage.text)
                                 }}
                               </p>
                             </div>
@@ -802,8 +817,8 @@
                 >
                   {{
                     repliedMessage.text.length > 30
-                      ? `${repliedMessage.text.slice(0, 30)}...`
-                      : repliedMessage.text
+                      ? `${removeBrTags(repliedMessage.text).slice(0, 30)}...`
+                      : removeBrTags(repliedMessage.text)
                   }}
                 </p>
               </div>
@@ -815,16 +830,19 @@
 
           <div v-if="selectedChat.id != '1'" class="chat-footer">
             <v-divider class="mb-3"></v-divider>
-            <v-text-field
+            <v-textarea
               rounded
               class="no-border-field"
               style="background-color: #fff"
               placeholder="Write Your Message..."
               outlined
               hide-details
+              no-resize
+              id="textMessage"
+              @keydown.enter.exact.prevent="messageText ? sendMessage() : ''"
+              @keydown.enter.shift.exact.prevent="goNextLine"
               :dir="messageDirection(messageText)"
               v-model.trim="messageText"
-              @keyup.enter="messageText ? sendMessage() : ''"
             >
               <!-- SENDING icon -->
               <template v-slot:append>
@@ -835,12 +853,12 @@
                     height="45"
                     :disabled="!messageText"
                     @click="sendMessage()"
-                    style="min-width: 40px; margin-top: 5px"
+                    style="min-width: 40px; margin-top: 7px"
                     ><v-icon color="primary">mdi-send</v-icon></v-btn
                   >
                 </div>
               </template>
-            </v-text-field>
+            </v-textarea>
           </div>
         </div>
 
@@ -1072,6 +1090,7 @@ import CountryFlag from "vue-country-flag";
 import CountryCodes from "./../../mixin/CountryCodes.vue";
 import DialCodes from "./../../components/DialCodes";
 import parsePhoneNumber from "libphonenumber-js";
+
 export default {
   components: {
     Avatar,
@@ -1150,6 +1169,13 @@ export default {
     };
   },
   methods: {
+    goNextLine() {
+      this.messageText += "\n";
+      setTimeout(() => {
+        var textarea = document.getElementsByTagName("textarea")[0];
+        textarea.scrollTop = textarea.scrollHeight - 50;
+      }, 10);
+    },
     // This function is called to open user profile dialog
     openUserProfileDialog() {
       this.userProfileDialog = true;
@@ -1208,19 +1234,21 @@ export default {
     // This function is called to show the replied meesage we clicked on it
     showMessage(messageId) {
       this.repliedMessageId = messageId;
-      document.getElementById(messageId).scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+      if (document.getElementById(messageId)) {
+        document.getElementById(messageId).scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
 
-      this.repliedMessageStyle =
-        "background-color: #cee4ee; border-radius:6px; transition: .3s linear;";
-
-      clearInterval(this.messageInterval);
-      this.messageInterval = setInterval(() => {
         this.repliedMessageStyle =
-          "background-color: transparent;transition: .3s linear;";
-      }, 2000);
+          "background-color: #cee4ee; border-radius:6px; transition: .3s linear;";
+
+        clearInterval(this.messageInterval);
+        this.messageInterval = setInterval(() => {
+          this.repliedMessageStyle =
+            "background-color: transparent;transition: .3s linear;";
+        }, 2000);
+      }
     },
     // This function is called to set and update chats data in localStorage
     setInLocalStorage() {
@@ -1284,7 +1312,7 @@ export default {
       let message = {
         id: uuidv4(),
         self: true,
-        text: this.messageText,
+        text: this.parsedText,
         time: this.currentTime(),
         repliedMessage: this.hasReply ? this.repliedMessage : {},
       };
@@ -1365,10 +1393,15 @@ export default {
         this.repliedMessage = {};
         this.hasReply = false;
       }
-      if (this.selectedChat.id == this.selectedItem.id) {
-        setTimeout(() => {
-          this.scrollToEnd();
-        }, 10);
+      if (this.selectedChat && this.selectedChat.id == this.selectedItem.id) {
+        let content = document.querySelector(".chat-content");
+        console.log(content.scrollTop);
+        console.log(content.scrollHeight);
+        if (content.scrollTop > content.scrollHeight - 500) {
+          setTimeout(() => {
+            this.scrollToEnd();
+          }, 10);
+        }
       }
 
       setTimeout(() => {
@@ -1478,9 +1511,7 @@ export default {
     replyMessage() {
       this.hasReply = true;
       this.repliedMessage = this.selectedMessage;
-      setTimeout(() => {
-        this.scrollToEnd();
-      }, 10);
+      document.getElementById("textMessage").focus();
     },
     // This function is called to change "isTyping" value of the chat when the user of chat is typing message or stop typing
     changeUserTypingStatus() {
@@ -1619,6 +1650,10 @@ export default {
       this.selectedChat = {};
     },
 
+    removeBrTags(str) {
+      return str.replaceAll("<br>", " ");
+    },
+
     doCopy() {},
   },
   computed: {
@@ -1665,6 +1700,9 @@ export default {
       if (this.editedName.length > 20) {
         return true;
       } else return false;
+    },
+    parsedText() {
+      return this.messageText.replace(/\n/g, "<br>");
     },
   },
   watch: {
