@@ -154,7 +154,7 @@
                     <p class="mb-0" v-else>&nbsp;</p>
 
                     <!-- the date of the last message sent in the chat -->
-                    <p class="mb-0 fs-xxsmall grey--text">
+                    <p class="mb-0 fs-xxsmall grey--text" style="height: 17px">
                       {{
                         computedChatDate(chat)
                           ? computedDate(computedChatDate(chat))
@@ -892,7 +892,7 @@
 
               <!-- COPY item -->
               <v-list-item
-                v-clipboard:copy="selectedMessage.text"
+                v-clipboard:copy="removeBrTags(selectedMessage.text)"
                 @click="doCopy()"
               >
                 <v-list-item-icon>
@@ -1651,7 +1651,9 @@ export default {
     },
 
     removeBrTags(str) {
-      return str.replaceAll("<br>", " ");
+      if (str) {
+        return str.replaceAll("<br>", " ");
+      }
     },
 
     doCopy() {},
