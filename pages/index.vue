@@ -22,7 +22,7 @@
           <v-dialog v-model="infoDialog" width="400">
             <v-card class="modal-card pt-5">
               <v-card-text>
-                <div v-if="infoDialog" class="mainBlack--text">
+                <div class="mainBlack--text">
                   <p class="fs-large mb-1">Dear user</p>
                   <p class="mb-5 fs-medium">
                     The information you enter in the login form will be

@@ -14,7 +14,8 @@ $secondary: #00838f;
   letter-spacing: 0 !important;
   &::placeholder {
     font-size: 0.8rem !important;
-    font-weight: bold;
+    // font-weight: bold;
+    color: #b2b2b2 !important;
   }
 }
 html,
@@ -108,6 +109,14 @@ input {
   border-radius: 12px !important;
   text-transform: none !important;
   font-size: 0.8rem !important;
+  &:active {
+    background-color: transparent !important;
+  }
+}
+.v-icon {
+  &:active {
+    background-color: transparent !important;
+  }
 }
 
 /* common card style */
@@ -283,9 +292,9 @@ input {
       }
 
       .dialCode {
-        height: 40px;
+        height: 39px;
         width: 100%;
-        border: 1px solid #999;
+        border: 1px solid #ccc;
         border-radius: 8px;
         display: flex;
         justify-content: center;
@@ -372,12 +381,12 @@ input {
     .chat-div {
       border-radius: 10px;
       width: 100%;
-      height: 85vh;
+      height: calc(100% - 161px);
       position: relative;
 
       .v-skeleton-loader__image {
         width: 100%;
-        height: 85vh;
+        height: 86.5vh;
         z-index: 100 !important;
         background-color: #d5e8ed;
       }
@@ -408,10 +417,24 @@ input {
         top: 0;
         left: 0;
         width: 100%;
+        height: 100%;
 
         &-header {
+          height: 57px;
           img {
             border-radius: 50%;
+          }
+          .search-box {
+            .v-input {
+              padding: 0 !important;
+              margin: 0 !important;
+            }
+            .v-input__slot {
+              padding-left: 15px !important;
+            }
+            .v-icon {
+              height: fit-content;
+            }
           }
         }
 
@@ -427,19 +450,21 @@ input {
           position: sticky;
           top: 0;
           z-index: 2;
+          height: 57px;
 
           .border-left {
             border-left: 2px solid $primary;
             padding-left: 7px;
+            padding-top: 3px;
           }
         }
 
         &-content {
-          height: 66.5vh;
+          height: 100%;
           width: 100%;
           overflow-y: auto;
           overflow-x: hidden;
-          scroll-behavior: smooth;
+          // scroll-behavior: smooth;
           position: relative;
           &::-webkit-scrollbar {
             width: 5px;
@@ -456,10 +481,10 @@ input {
             height: 76vh !important;
           }
           &.hasOneBox {
-            height: calc(66.5vh - 57px) !important;
+            height: calc(100% - 57px) !important;
           }
           &.hasTwoBox {
-            height: calc(66.5vh - 115px) !important;
+            height: calc(100% - 115px) !important;
           }
 
           .messages-by-date {
@@ -492,7 +517,7 @@ input {
             max-width: 350px;
             min-width: 50px;
             margin-top: 3px;
-            font-size: 0.76rem;
+            font-size: 0.78rem;
             padding: 10px 12px;
             text-align: left;
           }
@@ -538,13 +563,29 @@ input {
 
           .goDownBtn {
             position: sticky;
-            left: 5px;
+            right: 5px;
             bottom: 15px;
             min-width: 45px;
             width: 45px;
             height: 45px;
             border-radius: 50px !important;
             box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px !important;
+            float: right;
+          }
+
+          .new-message {
+            position: sticky;
+            bottom: 15px;
+            left: 50%;
+            animation: mover 0.5s infinite alternate;
+          }
+          @keyframes mover {
+            0% {
+              transform: translate(-50%, 0);
+            }
+            100% {
+              transform: translate(-50%, -5px);
+            }
           }
         }
 
@@ -575,13 +616,11 @@ input {
         color: #fff;
         font-size: 0.8rem;
         background-color: rgba($color: #000, $alpha: 0.3);
-        position: sticky;
-        top: 10px;
         margin: 0 auto;
         position: absolute;
-        top: 50%;
+        top: 58%;
         right: 50%;
-        transform: translateX(50%);
+        transform: translate(50%, 50%);
       }
     }
   }
@@ -776,4 +815,27 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.v-menu__content {
+  box-shadow: rgba(81, 81, 81, 0.15) 1.95px 1.95px 2.6px !important;
+  border-radius: 10px !important;
+  .v-list-item {
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+  .v-list-item__icon {
+    margin: 8px 0 !important;
+  }
+}
+
+.v-input:not(.v-input--is-focused) {
+  fieldset {
+    border-color: #ccc !important;
+  }
+}
+
+.disabled{
+  opacity: 0.5;
+  pointer-events: none;
 }

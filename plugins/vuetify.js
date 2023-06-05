@@ -30,9 +30,6 @@ const opts = {};
 export default new Vuetify({
   rtl: false,
   theme: {
-    options: {
-      customProperties: true,
-    },
     themes: {
       light: {
         primary: "#00acc1",
