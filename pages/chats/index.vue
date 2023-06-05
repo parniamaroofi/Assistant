@@ -631,7 +631,7 @@
 
               <v-spacer></v-spacer>
 
-              <div class="pt-3">
+              <div class="pt-3" v-if="selectedChat.id != '1'">
                 <v-menu offset-y transition="slide-y-transition" left>
                   <template v-slot:activator="{ on, attrs }">
                     <span v-bind="attrs" v-on="on" class="ms-1"
@@ -695,6 +695,7 @@
                 rounded
                 v-model="chatSearch"
                 @keyup.enter="doSearch()"
+                @input="searchDone = false"
               ></v-text-field>
               <!-- _________________________________________ -->
               <div v-if="searchDone" class="d-flex align-center">
@@ -730,7 +731,13 @@
                 <v-divider vertical class="mx-4"></v-divider>
               </div>
               <!-- _________________________________________ -->
-              <span class="pointer" @click="searchMode = false">
+              <span
+                class="pointer"
+                @click="
+                  searchMode = false;
+                  searchDone = false;
+                "
+              >
                 <v-icon>mdi-arrow-right</v-icon>
               </span>
             </div>
@@ -884,7 +891,7 @@
                                 }}
                               </p>
                             </div>
-                            <span v-html="item2.text"></span>
+                            <span v-html="computedText(item2.text)"></span>
                           </div>
                         </div>
 

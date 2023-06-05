@@ -657,6 +657,20 @@ export default {
       }
     },
 
+    computedText(text) {
+      if (this.searchDone) {
+        return text.replace(new RegExp(this.chatSearch, "ig"), (match) => {
+          return (
+            '<span style="background-color: #0c626d; color:#fff; padding: 0 3px; border-radius: 4px">' +
+            match +
+            "</span>"
+          );
+        });
+      } else {
+        return text;
+      }
+    },
+
     doCopy() {},
   },
   computed: {
