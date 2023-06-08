@@ -16,6 +16,7 @@ export default {
     return {
       // String
       filter: "",
+      doFrom: "",
       interval: "",
       chatSearch: "",
       editedName: "",
@@ -247,6 +248,28 @@ export default {
         this.searchDone = true;
       }
     },
+    updateSearch() {
+      if (this.chatSearch) {
+        let allTexts = [];
+        this.searchResult = [];
+        this.selectedChat.messagesByDate.forEach((element1) => {
+          element1.messages.forEach((element2) => {
+            allTexts.push(element2);
+          });
+        });
+        this.searchResult = allTexts.filter((x) =>
+          this.removeBrTags(x.text).includes(this.chatSearch)
+        );
+
+        if (this.searchResult.length) {
+          this.noSearchResult = false;
+        } else {
+          this.noSearchResult = true;
+        }
+
+        this.searchDone = true;
+      }
+    },
     goNextResult() {
       this.searchNumber++;
       this.showMessage(
@@ -321,10 +344,13 @@ export default {
         });
       }
 
+      if (this.searchDone) {
+        this.updateSearch();
+      }
+
       this.messageText = "";
       this.repliedMessage = {};
       this.hasReply = false;
-      this.searchMode = false;
       setTimeout(() => {
         this.scrollToEnd();
       }, 10);
@@ -390,7 +416,10 @@ export default {
       if (this.selectedChat.id == this.selectedItem.id) {
         this.repliedMessage = {};
         this.hasReply = false;
-        this.searchMode = false;
+      }
+
+      if (this.searchDone) {
+        this.updateSearch();
       }
 
       setTimeout(() => {
@@ -577,13 +606,23 @@ export default {
     // This function is called to delete desired chat from chats list
     deleteChat() {
       this.deleteChatConfirmation = false;
-      let index = this.chats.findIndex((x) => x.id == this.selectedItem.id);
+      let index;
+      if (this.doFrom == "list") {
+        index = this.chats.findIndex((x) => x.id == this.selectedItem.id);
+      } else {
+        index = this.chats.findIndex((x) => x.id == this.selectedChat.id);
+      }
+
       if (
-        this.selectedChat.id &&
-        this.selectedChat.id == this.selectedItem.id
+        (this.doFrom == "list" &&
+          this.selectedChat.id &&
+          this.selectedChat.id == this.selectedItem.id) ||
+        this.doFrom == "private"
       ) {
+        this.doFrom = "";
         this.selectedChat = {};
       }
+
       this.chats.splice(index, 1);
       this.repliedMessage = {};
       this.hasReply = false;
@@ -592,12 +631,19 @@ export default {
     // This function is called to clear history of desired chat
     clearHistory() {
       this.clearHistoryConfirmation = false;
-      let index = this.chats.findIndex((x) => x.id == this.selectedItem.id);
+      let index;
+      if (this.doFrom == "list") {
+        index = this.chats.findIndex((x) => x.id == this.selectedItem.id);
+      } else {
+        index = this.chats.findIndex((x) => x.id == this.selectedChat.id);
+      }
+
       this.chats[index].messagesByDate = [];
       this.chats[index].pinnedMessage = {};
       this.chats[index].unseenNumber = 0;
       this.repliedMessage = {};
       this.hasReply = false;
+      this.doFrom = "";
       this.setInLocalStorage();
     },
     // This function is called to delete desired message

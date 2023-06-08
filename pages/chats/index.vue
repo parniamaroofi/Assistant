@@ -190,7 +190,12 @@
                 </v-list-item>
 
                 <!-- DELETE CHAT item -->
-                <v-list-item @click="deleteChatConfirmation = true">
+                <v-list-item
+                  @click="
+                    deleteChatConfirmation = true;
+                    doFrom = 'list';
+                  "
+                >
                   <v-list-item-icon>
                     <v-icon>mdi-delete-outline</v-icon>
                   </v-list-item-icon>
@@ -200,7 +205,12 @@
                 </v-list-item>
 
                 <!-- CLEAR HISTORY item -->
-                <v-list-item @click="clearHistoryConfirmation = true">
+                <v-list-item
+                  @click="
+                    clearHistoryConfirmation = true;
+                    doFrom = 'list';
+                  "
+                >
                   <v-list-item-icon>
                     <v-icon style="font-size: 22px"
                       >mdi-chat-remove-outline</v-icon
@@ -231,12 +241,14 @@
 
         <!-- Dialog to get confirm to delete a chat  -->
         <v-dialog v-model="deleteChatConfirmation" width="350">
-          <v-card class="dialog-card">
+          <v-card v-if="deleteChatConfirmation" class="dialog-card">
             <v-card-title class="pb-2">
               <div class="d-flex">
                 <avatar
                   :size="40"
-                  :username="selectedItem.user"
+                  :username="
+                    doFrom == 'list' ? selectedItem.user : selectedChat.user
+                  "
                   color="#fff"
                 ></avatar>
                 <span class="fs-xlarge pl-3 pt-1">Delete chat</span>
@@ -247,7 +259,9 @@
               <div>
                 <span class="fs-medium"
                   >Are you sure you want to delete chat with
-                  <b>{{ selectedItem.user }}</b
+                  <b>{{
+                    doFrom == "list" ? selectedItem.user : selectedChat.user
+                  }}</b
                   >?</span
                 >
 
@@ -272,12 +286,14 @@
 
         <!-- Dialog to get confirm to clear history of a chat  -->
         <v-dialog v-model="clearHistoryConfirmation" width="350">
-          <v-card class="dialog-card">
+          <v-card v-if="clearHistoryConfirmation" class="dialog-card">
             <v-card-title class="pb-2">
               <div class="d-flex">
                 <avatar
                   :size="40"
-                  :username="selectedItem.user"
+                  :username="
+                    doFrom == 'list' ? selectedItem.user : selectedChat.user
+                  "
                   color="#fff"
                 ></avatar>
                 <span class="fs-xlarge pl-3 pt-1">Clear history</span>
@@ -288,7 +304,9 @@
               <div>
                 <span class="fs-medium"
                   >Are you sure you want to clear chat history with
-                  <b>{{ selectedItem.user }}</b
+                  <b>{{
+                    doFrom == "list" ? selectedItem.user : selectedChat.user
+                  }}</b
                   >?</span
                 >
 
@@ -651,7 +669,12 @@
                     </v-list-item>
 
                     <!-- CLEAR HISTORY item -->
-                    <v-list-item>
+                    <v-list-item
+                      @click="
+                        clearHistoryConfirmation = true;
+                        doFrom = 'private';
+                      "
+                    >
                       <v-list-item-icon>
                         <v-icon style="font-size: 22px"
                           >mdi-chat-remove-outline</v-icon
@@ -663,7 +686,12 @@
                     </v-list-item>
 
                     <!-- DELETE CHAT item -->
-                    <v-list-item>
+                    <v-list-item
+                      @click="
+                        deleteChatConfirmation = true;
+                        doFrom = 'private';
+                      "
+                    >
                       <v-list-item-icon>
                         <v-icon style="transform: translateX(-1px)"
                           >mdi-delete-outline</v-icon
@@ -755,7 +783,7 @@
           <!-- The box that display pinned message -->
           <div
             class="pin-box d-flex justify-space-between pointer"
-            v-if="selectedChat.pinnedMessage.id"
+            v-if="selectedChat.pinnedMessage && selectedChat.pinnedMessage.id"
             @click="showMessage(selectedChat.pinnedMessage.id)"
           >
             <div class="border-left">
