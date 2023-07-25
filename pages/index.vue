@@ -2,6 +2,8 @@
   <div class="login-page">
     <!-- Main div -->
     <div class="main-box"></div>
+    <div class="second-box"></div>
+    <div class="third-box"></div>
     <!-- Login page content -->
     <div class="box-content">
       <div>

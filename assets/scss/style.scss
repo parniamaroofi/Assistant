@@ -481,10 +481,10 @@ input {
             height: 76vh !important;
           }
           &.hasOneBox {
-            height: calc(100% - 57px) !important;
+            height: calc(100% - 187px) !important;
           }
           &.hasTwoBox {
-            height: calc(100% - 115px) !important;
+            height: calc(100% - 244px) !important;
           }
 
           .messages-by-date {
@@ -760,12 +760,40 @@ input {
     transform: translate(-50%, -50%) rotate(45deg);
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
       rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    z-index: 10;
+  }
+  .second-box {
+    background-color: #eeeeee;
+    width: 500px;
+    height: 500px;
+    border-radius: 50px;
+    position: absolute;
+    left: 48.5%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+      rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    z-index: 1;
+  }
+  .third-box {
+    background-color: #f3f3f3;
+    width: 500px;
+    height: 500px;
+    border-radius: 50px;
+    position: absolute;
+    left: 51.5%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+      rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    z-index: 1;
   }
   .box-content {
     position: absolute;
     left: 50%;
     top: 55%;
     transform: translate(-50%, -50%);
+    z-index: 10;
 
     .bold-text {
       transform: translateY(-6px);
