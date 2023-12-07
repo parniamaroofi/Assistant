@@ -974,6 +974,11 @@
                 <p
                   class="fs-xsmall grey--text mb-0"
                   :dir="messageDirection(repliedMessage.text)"
+                  :class="
+                    messageDirection(repliedMessage.text) == 'rtl'
+                      ? 'text-left'
+                      : 'text-right'
+                  "
                 >
                   {{
                     repliedMessage.text.length > 30
