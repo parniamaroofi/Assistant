@@ -78,7 +78,7 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    publicPath: "/assistant-demo/_nuxt/",
+    publicPath: "/assistant-demo/",
     extend(config, ctx) {},
   },
 };
