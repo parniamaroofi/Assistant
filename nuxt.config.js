@@ -66,6 +66,9 @@ export default {
     "@nuxtjs/axios",
     "@nuxtjs/vuetify",
   ],
+  vuetify: {
+    publicPath: process.env.NODE_ENV === "production" ? "/assistant-demo/" : "",
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
@@ -78,7 +81,7 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    publicPath: "/assistant-demo/",
+    publicPath: process.env.NODE_ENV === "production" ? "/assistant-demo/" : "",
     extend(config, ctx) {},
   },
 };

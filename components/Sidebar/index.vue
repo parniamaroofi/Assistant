@@ -69,7 +69,7 @@ export default {
     return {
       items: [
         {
-          icon: "mdi-home",
+          icon: "$Home",
           title: "Home",
           to: "/home",
         },
