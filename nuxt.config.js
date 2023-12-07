@@ -1,5 +1,6 @@
 export default {
-  mode: "spa",
+  // mode: "spa",
+  // ssr: false,
   // server: {
   //   host: "0.0.0.0",
   // },
