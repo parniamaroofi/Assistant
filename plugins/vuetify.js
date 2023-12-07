@@ -5,8 +5,7 @@ import "vuetify/dist/vuetify.min.css";
 // Icons
 import Pen from "@/components/icons/Pen.vue";
 import Key from "@/components/icons/Key.vue";
-// import Home from "@/components/icons/Home.vue";
-const Home = require("@/components/icons/Home.vue");
+import Home from "@/components/icons/Home.vue";
 import Note from "@/components/icons/Note.vue";
 import Chat from "@/components/icons/Chat.vue";
 import User from "@/components/icons/User.vue";

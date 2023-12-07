@@ -129,10 +129,11 @@ export default {
     },
     // This function is called to change the display form of the date
     computedDate(date) {
+      console.log(date.split("/")[1]);
       let year = date.split("/")[0]; // GET YEAR of the date
       let month = Number(date.split("/")[1]); // GET MONTH of the date
       let day = Number(date.split("/")[2]); // GET DAY of the date
-      let monthName = this.months[month]; // Get the name of the month ex: April, June,...
+      let monthName = this.months[month - 1]; // Get the name of the month ex: April, June,...
       return monthName + " " + day + ", " + year;
     },
     // This function is called to show time only once for messages sent at the same time
