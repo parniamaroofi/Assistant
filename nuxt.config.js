@@ -8,7 +8,7 @@ export default {
    ** Headers of the page
    */
   router: {
-    base: "/assistant-demo/", // adjust to your repository name
+    base: process.env.NODE_ENV === "production" ? "/assistant-demo/" : "", // adjust to your repository name
   },
   head: {
     title: process.env.npm_package_name || "",
@@ -66,9 +66,6 @@ export default {
     "@nuxtjs/axios",
     "@nuxtjs/vuetify",
   ],
-  vuetify: {
-    publicPath: process.env.NODE_ENV === "production" ? "/assistant-demo/" : "",
-  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
