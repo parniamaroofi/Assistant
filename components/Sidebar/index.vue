@@ -69,7 +69,7 @@ export default {
     return {
       items: [
         {
-          icon: "$vuetify.icons.Home",
+          icon: "$vuetify.icons.Note",
           title: "Home",
           to: "/home",
         },
